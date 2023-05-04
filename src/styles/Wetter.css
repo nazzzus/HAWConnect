@@ -1,0 +1,38 @@
+.infoAnzeige{
+    position: relative;
+    margin-top: 4em;
+    width: 5em;
+    background-color: rgba(50, 31, 212, 0.356);
+    border-radius: 16px;
+
+    padding: 1px 1px;
+
+    color: #FFF;
+    font-size: 2em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.infoAnzeige h1{
+    padding: 0em;
+    margin: 0em;
+    font-size: 1em;
+    color: blueviolet;
+    height: 1em;
+}
+
+.infoAnzeige p{
+    font-size: 0.5em;
+    padding: 0em;
+    margin: 0em;
+    color: blueviolet;
+}
+
+.infoAnzeige .zeitAnzeige{
+    font-size: 0.5em;
+    padding: 0em;
+    margin: 0em;
+    color: blueviolet;
+}

@@ -1,0 +1,74 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  
+  th, td {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+  }
+  
+  th {
+    text-align: left;
+    background-color: #f2f2f2;
+  }
+  
+  td button {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+  
+  td button:focus {
+    outline: none;
+  }
+  
+  td button:active {
+    transform: scale(0.9);
+  }
+  
+  td img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+  
+  @media screen and (max-width: 767px) {
+    th, td {
+      display: block;
+      width: 100%;
+    }
+    
+    td:first-child {
+      font-weight: bold;
+      padding-top: 1rem;
+    }
+  
+    td:nth-child(2)::before {
+      content: "Belegt: ";
+      font-weight: bold;
+    }
+  
+    td:nth-child(3)::before {
+      content: "Bestanden: ";
+      font-weight: bold;
+    }
+  
+    td:nth-child(4)::before {
+      content: "Informationen: ";
+      font-weight: bold;
+    }
+  
+    td button {
+      font-size: 1.2rem;
+    }
+  
+    td img {
+      margin-top: 1rem;
+    }
+  }
+  

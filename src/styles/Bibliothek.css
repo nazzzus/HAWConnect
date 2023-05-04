@@ -1,0 +1,409 @@
+
+.Bibliothek{
+    width: 100%;
+    height: 100%;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+    flex-direction: column;
+}
+
+.Bibliothek .BibTitle{
+    height: 15em;
+    width: 100%;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Bibliothek .BibTitleText{
+    width: 100%;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+
+    position: relative;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    color: #000000;
+    font-size: 1em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+
+.Bibliothek .BibContent .BibContentLeftMid{
+    margin-top: 2em;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    float: left;
+    padding: 2em;
+    text-align: center;
+    width: 70%;
+}
+
+.Bibliothek .BibContent .BibContentRight{
+    
+    float: right;
+    position: relative;
+    margin-top: 4em;
+    width: 20%;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    padding: 1px 1px;
+
+    color: #000000;
+    font-size: 0.5em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.Bibliothek .BibContent .BibContentLeftMid .BibContentBuchsuche{
+    background-color: rgb(34, 150, 170);
+    width: 100%;
+}
+
+.Bibliothek .BibContent .BibContentLeftMid .BibContentBuchsuche iframe{
+    margin-top: 1em;
+    background-color: rgb(34, 150, 170);
+    width: 100%;
+    height: 25em;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .Bibliothek .BibContent .BibContentRight{
+    
+        float:none;
+        position: relative;
+        margin-top: 0em;
+        margin-bottom: 15em;
+        margin-left: 25%;
+        width: 50%;
+        height: 25%;
+        background-color: rgba(4, 19, 41, 0.356);
+        border-radius: 16px;
+    
+        padding: 1% 1%;
+    
+        color: #000000;
+        font-size: 0.5em;
+        font-weight: 900;
+    
+        text-align: center;
+        box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+    }
+
+    .BibItemSingle .BibItemText .p, h1 {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    .Bibliothek .BibContent .BibContentLeftMid {
+        float: none;
+    }
+
+    
+.Bibliothek .BibTitleText{
+    width: auto;
+    margin-top: 0em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    position: relative;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    color: #000000;
+    font-size: 1em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.Bibliothek .BibTitle {
+    height: 15em;
+    width: auto;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Bibliothek .BibContent .BibContentLeftMid {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 0em;
+    float:none;
+    /* padding: 2em; */
+    text-align: center;
+    width: auto;
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .Bibliothek .BibContent .BibContentRight{
+    
+        float:none;
+        position: relative;
+        margin-top: 0em;
+        margin-bottom: 15em;
+        margin-left: 25%;
+        width: 50%;
+        height: 25%;
+        background-color: rgba(4, 19, 41, 0.356);
+        border-radius: 16px;
+    
+        padding: 1% 1%;
+    
+        color: #000000;
+        font-size: 0.5em;
+        font-weight: 900;
+    
+        text-align: center;
+        box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+    }
+
+    .BibItemSingle .BibItemText .p, h1 {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    .Bibliothek .BibContent .BibContentLeftMid {
+        float: none;
+    }
+
+    
+.Bibliothek .BibTitleText{
+    width: auto;
+    margin-top: 0em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    position: relative;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    color: #000000;
+    font-size: 1em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.Bibliothek .BibTitle {
+    height: 15em;
+    width: auto;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Bibliothek .BibContent .BibContentLeftMid {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 0em;
+    float:none;
+    /* padding: 2em; */
+    text-align: center;
+    width: auto;
+}
+}
+
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+    .Bibliothek .BibContent .BibContentRight{
+    
+        float:none;
+        position: relative;
+        margin-top: 0em;
+        margin-bottom: 15em;
+        margin-left: 25%;
+        width: 50%;
+        height: 25%;
+        background-color: rgba(4, 19, 41, 0.356);
+        border-radius: 16px;
+    
+        padding: 1% 1%;
+    
+        color: #000000;
+        font-size: 0.5em;
+        font-weight: 900;
+    
+        text-align: center;
+        box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+    }
+
+    .BibItemSingle .BibItemText .p, h1 {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    .Bibliothek .BibContent .BibContentLeftMid {
+        float: none;
+    }
+
+    
+.Bibliothek .BibTitleText{
+    width: auto;
+    margin-top: 0em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    position: relative;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    color: #000000;
+    font-size: 1em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.Bibliothek .BibTitle {
+    height: 15em;
+    width: auto;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Bibliothek .BibContent .BibContentLeftMid {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 0em;
+    float:none;
+    /* padding: 2em; */
+    text-align: center;
+    width: auto;
+}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 992px) {
+    .Bibliothek .BibContent .BibContentRight{
+    
+        float:none;
+        position: relative;
+        margin-top: 0em;
+        margin-bottom: 15em;
+        margin-left: 25%;
+        width: 50%;
+        height: 25%;
+        background-color: rgba(4, 19, 41, 0.356);
+        border-radius: 16px;
+    
+        padding: 1% 1%;
+    
+        color: #000000;
+        font-size: 0.5em;
+        font-weight: 900;
+    
+        text-align: center;
+        box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+    }
+
+    .BibItemSingle .BibItemText .p, h1 {
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-weight: bold;
+    }
+
+    .Bibliothek .BibContent .BibContentLeftMid {
+        float: none;
+    }
+
+    
+.Bibliothek .BibTitleText{
+    width: auto;
+    margin-top: 0em;
+    margin-left: 1em;
+    margin-right: 1em;
+
+    position: relative;
+    height: 25%;
+    background-color: rgba(4, 19, 41, 0.356);
+    border-radius: 16px;
+
+    color: #000000;
+    font-size: 1em;
+    font-weight: 900;
+
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.Bibliothek .BibTitle {
+    height: 15em;
+    width: auto;
+    margin-top: 1em;
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.Bibliothek .BibContent .BibContentLeftMid {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 0em;
+    float:none;
+    /* padding: 2em; */
+    text-align: center;
+    width: auto;
+}
+}
+
+
+

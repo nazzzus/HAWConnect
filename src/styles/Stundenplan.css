@@ -1,0 +1,62 @@
+.stundenplan-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  th,
+  td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+  }
+  
+  thead th:first-child {
+    width: 20%;
+  }
+  
+  thead th {
+    width: 12%;
+  }
+  
+  tbody td {
+    height: 60px;
+  }
+  
+  tfoot td {
+    text-align: center;
+    padding-top: 20px;
+  }
+  
+  tfoot button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  @media (max-width: 768px) {
+    thead th:first-child {
+      width: 25%;
+    }
+  
+    thead th {
+      width: 11%;
+    }
+  }
+  
