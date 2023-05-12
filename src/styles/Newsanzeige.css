@@ -1,0 +1,47 @@
+.newsAnzeige{
+    position: relative;
+    float: right;
+    margin-top: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: rgba(50, 31, 212, 0.356);
+    border-radius: 16px;
+    padding: 1px 1px;
+    color: #FFF;
+    font-size: 1.2em;
+    font-weight: 900;
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+}
+
+.newsboard-main h1{
+    font-size: 0.5em;
+} 
+
+.newsboard-main-items {
+    font-size: 0.5em;
+} 
+
+.newsboard-table{
+    height: auto;
+    overflow: auto;
+    text-align: center;
+    flex-direction: column;
+    padding-bottom: 0.5em;
+    border-radius: 10px;
+    width: auto;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-bottom: 0em;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 0em;
+}
+
+.newsboard-table td{
+    width: auto;
+    height: auto;
+    background-color: rgba(50, 31, 212, 0.356);
+    text-align: center;
+    color: white;
+}

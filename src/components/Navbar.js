@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
-import Logo from '../assets/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import '../styles/Navbar.css'
-import Profil from '../images/user.png'
-import Mail from '../images/email.png'
-import Settings from '../images/settings.png'
-import LoginIcon from '../images/login.png'
 import ReorderIcon from '@mui/icons-material/Reorder';
-import Login from '../pages/Login'
+import Header from '../components/Header'
+import useCookies from 'react-cookie/cjs/useCookies'
+import { useNavigate } from 'react-router-dom'
 
 
 function Navbar() {
+
+    const [cookies, setCookies] = useCookies(['access_token']);
+
+    const navigate = useNavigate();
+
+    const logout = () => {
+        setCookies('access_token', '')
+        window.localStorage.removeItem("userID");
+        navigate('/Auth');
+    }
 
     const [openLinks, setOpenLinks] = useState(false);
 
@@ -22,9 +29,7 @@ function Navbar() {
     <div className='navbar'>
         <div className='leftSide' id={openLinks ? "open" : "close"}>
             <div className='logoSide'>
-            <Link to="/">
-            <img src={Logo} />
-            </Link>
+                <Header/>
             </div>
             <div className='hiddenLinks'>
             <Link to="/">
@@ -71,16 +76,19 @@ function Navbar() {
 
         <div className='rightSide'>
             <Link to="/profil">
-                <img src={Profil} />
+                <button>Profil</button>
             </Link>
             <Link to="/einstellungen">
-                <img src={Settings} />
+                <button>Einstellungen</button>
             </Link>
-            <Link to="/Login">
-                <img src={LoginIcon} />
-            </Link>  
+            {!cookies.access_token ? (
+            <Link to="/Auth">
+                <button>Zum Login</button>
+            </Link> ): (
+                <button onClick={logout}>Logout</button>)}
+    
             <Link to="https://outlook.de/" target="_blank" rel="noopener noreferrer">
-                <img src={Mail} />
+                <button>Mail</button>
             </Link> 
         </div>
     </div>

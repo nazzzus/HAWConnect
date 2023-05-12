@@ -1,6 +1,6 @@
 .navbar {
     width: 100%;
-    height: 5em;
+    height: 10em;
     background-color: #4389be;
     display: flex;
     flex-direction: row;
@@ -15,22 +15,38 @@
     align-items: center;
     padding-left: 10em;
   }
+
+  .navbar .leftSide .logoSide {
+    flex: 50%;
+    height: 100%;
+    align-items: center;
+  }
   
   .navbar .leftSide img {
     width: 15em;
   }
 
-  .navbar .rightSide img {
-    width: 2em;
-    height: 2em;
+  .rightSide {
+    margin-right: 0.5em;
+    display:grid;
   }
 
-  .navbar .rightSide {
-    flex: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .rightSide button {
+  background-color: #4CAF50; /* Green */
+  color: white;
+  height: auto;
+  width: 10em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
   }
+  
+  .rightSide button:hover {
+    background-color: #0062cc;
+  }
+  
+
   
   .navbar .midSide {
     flex: 50%;
@@ -156,9 +172,7 @@
     
 
     .navbar .rightSide a {
-        width: 10px;
-        padding: 1px;
-        margin: 1em;
+        margin-right: 0.5em;
         margin-left: 0.5em;
       }
     

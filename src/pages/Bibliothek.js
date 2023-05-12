@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import BannerImage from '../assets/bibBanner.png'
 import '../styles/Bibliothek.css'
-import BibList from '../helpers/BibList'
+import BibService from '../components/BibService'
 import {Link} from 'react-router-dom'
+
 
 function Bibliothek() {
   return (
@@ -27,13 +28,9 @@ function Bibliothek() {
                 </div>
                 <div className='BibContentBuchAusleihen'>
                     <h1>
-                        Lückenfüller bis Buchausleihe funktioniert!
+                        Bücher-Service
                     </h1>
-                </div>
-                <div className='BibContentBuchRueckgabe'>
-                    <h1>
-                        Lückenfüller bis Buchrückgabe funktioniert!
-                    </h1>
+                    <BibService/>
                 </div>
             </div>
             <div className='BibContentRight'>

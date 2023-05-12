@@ -4,13 +4,6 @@ import Vplan from '../assets/vplan.png';
 import Üplan from '../assets/üplan.png';
 import Pplan from '../assets/pplan.png';
 
-import Kalender from '../helpers/Kalender'
-import Stundenplan from '../helpers/Stundenplan'
-import Vorlesungsplan from '../helpers/Vorlesungsplan'
-import Uebungsplan from '../helpers/Uebungsplan'
-import Pruefungsplan from '../helpers/Pruefungsplan'
-
-
 export const PlanerList = [
     {
         name: "Kalender",

@@ -1,0 +1,9 @@
+
+.impressum{
+    position: relative;
+    height: 80%;
+}
+
+.impressumText p{
+    font-size: 1em;
+}

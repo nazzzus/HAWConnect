@@ -1,0 +1,30 @@
+@keyframes colorChange {
+    0% {
+      color: white;
+    }
+    33% {
+      color: #b300b3; /* lila */
+    }
+    66% {
+      color: black;
+    }
+    100% {
+      color: white;
+    }
+  }
+  
+  .logo {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateZ(-50px) rotateY(30deg);
+    font-size: 5rem;
+    text-shadow: 0px 0px 20px rgba(255, 255, 255, 0.8);
+    animation: colorChange 9s infinite;
+    flex: 50%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+  
+  

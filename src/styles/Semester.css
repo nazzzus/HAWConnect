@@ -1,0 +1,10 @@
+table {
+    border-collapse: collapse;
+    width: 70%;
+    height: 100%;
+    margin-bottom: 5em;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 5em;
+    position: relative;
+}

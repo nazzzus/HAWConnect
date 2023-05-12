@@ -1,7 +1,9 @@
 .infoAnzeige{
     position: relative;
-    margin-top: 4em;
-    width: 5em;
+    float: right;
+    margin-top: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
     background-color: rgba(50, 31, 212, 0.356);
     border-radius: 16px;
 
@@ -33,6 +35,6 @@
 .infoAnzeige .zeitAnzeige{
     font-size: 0.5em;
     padding: 0em;
-    margin: 0em;
+    margin-top: 1.5em;
     color: blueviolet;
 }

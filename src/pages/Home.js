@@ -3,8 +3,13 @@ import { Link } from 'react-router-dom'
 import BannerImage from '../assets/hawBanner.png'
 import '../styles/Home.css'
 import '../styles/Wetter.css'
+import '../styles/Todo.css'
+import '../styles/Newsanzeige.css'
 import axios from "axios";
 import Wetter from '../helpers/Wetter'
+import Todo from '../components/TodoMain'
+import Newsanzeige from '../components/Newsanzeige'
+import Benachrichtigung from '../components/Benachrichtigung';
 
 
 function Clock() {
@@ -39,6 +44,8 @@ function Home() {
             <h2>
                 Plane alles rund um dein Studium!
             </h2>
+            </div>
+            <div className='mainContent'>
             <div className='infoAnzeige'>
               <div className='zeitAnzeige'>
                <Clock />
@@ -48,9 +55,15 @@ function Home() {
               </div>
             </div>
             <div className='newsAnzeige'>
-              
+              <Newsanzeige/>
             </div>
-        </div>
+            <div className='todo'>
+              <Todo />
+            </div>
+            <div className='benachrichtigungen'>
+              <Benachrichtigung/>
+            </div>
+            </div>
     </div>
   )
 }
