@@ -23,6 +23,7 @@ import React, {useEffect, useState } from 'react';
 import News from './components/Newsanzeige';
 import CreateBook from './helpers/create-book'
 import Viewbook from './helpers/view-book';
+import Zitat from './helpers/Zitat';
 //semesterPages
 import Semester1 from './semesterPages/Semester1';
 import Semester2 from './semesterPages/Semester2';
@@ -48,6 +49,7 @@ function App() {
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
           <Route path='/Auth' exact element={<Auth/>} />
+          <Route path='/Zitat' exact element={<Zitat/>} />
           <Route path='/Create' exact element={<Create/>} />
           <Route path='/Saved' exact element={<Saved/>} />
           <Route path='/Kalender' exact element={<Kalender/>} />

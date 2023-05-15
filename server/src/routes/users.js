@@ -6,7 +6,15 @@ import { UserModel } from "../models/Users.js";
 const router = express.Router();
 
 router.post("/register", async(req, res) => {
-    const { username, email, password } = req.body;
+    const { 
+      username, 
+      vorname, 
+      nachname, 
+      geschlecht, 
+      studiengang, 
+      geburtstag, 
+      password, 
+      email } = req.body;
     const user = await UserModel.findOne({username: username});
     const mail = await UserModel.findOne({email: email});
     
@@ -21,7 +29,15 @@ router.post("/register", async(req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = new UserModel({     username, email, password: hashedPassword,   });
+    const newUser = new UserModel({     
+      username, 
+      vorname, 
+      nachname, 
+      geschlecht, 
+      studiengang,
+      geburtstag,
+      password: hashedPassword,
+      email,    });
     await newUser.save();
 
     res.json({  message: "User registered successfully!"    });

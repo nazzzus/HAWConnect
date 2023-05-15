@@ -10,6 +10,7 @@ import Wetter from '../helpers/Wetter'
 import Todo from '../components/TodoMain'
 import Newsanzeige from '../components/Newsanzeige'
 import Benachrichtigung from '../components/Benachrichtigung';
+import Zitat from '../helpers/Zitat';
 
 
 function Clock() {
@@ -46,12 +47,17 @@ function Home() {
             </h2>
             </div>
             <div className='mainContent'>
-            <div className='infoAnzeige'>
-              <div className='zeitAnzeige'>
-               <Clock />
+            <div className='linkeAnzeige'>
+              <div className='infoAnzeige'>
+                <div className='zeitAnzeige'>
+                <Clock />
+                </div>
+                <div className="wetterAnzeige">
+                  <Wetter />
+                </div>
               </div>
-              <div className="wetterAnzeige">
-                <Wetter />
+              <div className='zitatAnzeige'>
+                <Zitat/>
               </div>
             </div>
             <div className='newsAnzeige'>
