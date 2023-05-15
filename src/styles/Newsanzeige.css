@@ -1,6 +1,7 @@
 .newsAnzeige{
     position: relative;
     float: right;
+    height: auto;
     margin-top: 0.5em;
     margin-left: 1em;
     margin-right: 1em;

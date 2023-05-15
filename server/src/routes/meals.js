@@ -1,6 +1,6 @@
 import express, { response } from 'express';
 import mongoose from 'mongoose';
-import { RecipeModel } from "../models/Recipes.js";
+import { MealModel } from "../models/Meals.js";
 
 const router = express.Router();
 
@@ -25,5 +25,5 @@ router.post('/', async (req, res) => {
     }
 });
 
-export {router as recipeRouter};
+export {router as mealsRouter};
 

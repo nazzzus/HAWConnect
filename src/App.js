@@ -21,6 +21,8 @@ import Stundenplan from './helpers/Stundenplan';
 import {BrowserRouter as Router, Route, Routes as Switch} from 'react-router-dom';
 import React, {useEffect, useState } from 'react';
 import News from './components/Newsanzeige';
+import CreateBook from './helpers/create-book'
+import Viewbook from './helpers/view-book';
 //semesterPages
 import Semester1 from './semesterPages/Semester1';
 import Semester2 from './semesterPages/Semester2';
@@ -28,6 +30,7 @@ import Semester3 from './semesterPages/Semester3';
 import Semester4 from './semesterPages/Semester4';
 import Semester5 from './semesterPages/Semester5';
 import Semester6 from './semesterPages/Semester6';
+
 
 
 
@@ -59,6 +62,8 @@ function App() {
           <Route path='/Semester4' exact element={<Semester4/>} />
           <Route path='/Semester5' exact element={<Semester5/>} />
           <Route path='/Semester6' exact element={<Semester6/>} />
+          <Route path='/Createbook' exact element={<CreateBook/>} />
+          <Route path='/Viewbook' exact element={<Viewbook/>} />
         </Switch>
         <Footer />
       </Router>

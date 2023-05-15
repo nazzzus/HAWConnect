@@ -3,6 +3,8 @@ import BannerImage from '../assets/bibBanner.png'
 import '../styles/Bibliothek.css'
 import BibService from '../components/BibService'
 import {Link} from 'react-router-dom'
+import  Viewbook from '../helpers/view-book'
+
 
 
 function Bibliothek() {
@@ -30,6 +32,7 @@ function Bibliothek() {
                     <h1>
                         Bücher-Service
                     </h1>
+                    <Viewbook/>
                     <BibService/>
                 </div>
             </div>
