@@ -31,6 +31,8 @@ import Semester3 from './semesterPages/Semester3';
 import Semester4 from './semesterPages/Semester4';
 import Semester5 from './semesterPages/Semester5';
 import Semester6 from './semesterPages/Semester6';
+//pläne
+import Pruefungsplan from './pages/Pruefungsplan'
 
 
 
@@ -66,6 +68,7 @@ function App() {
           <Route path='/Semester6' exact element={<Semester6/>} />
           <Route path='/Createbook' exact element={<CreateBook/>} />
           <Route path='/Viewbook' exact element={<Viewbook/>} />
+          <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
         </Switch>
         <Footer />
       </Router>

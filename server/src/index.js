@@ -7,6 +7,7 @@ import { mealsRouter } from './routes/meals.js';
 import { newsRouter } from './routes/news.js';
 import { booksRouter } from './routes/books.js';
 import { quotesRouter } from './routes/quotes.js';
+import { examsRouter } from './routes/exams.js';
 
 const app = express()
 
@@ -18,6 +19,7 @@ app.use("/meals", mealsRouter);
 app.use("/news", newsRouter);
 app.use('/book', booksRouter);
 app.use('/quotes', quotesRouter);
+app.use('/exam', examsRouter);
 
 mongoose.connect(
     "mongodb+srv://nazzzus:Genshin2023@hawcon.bncl3gu.mongodb.net/hawcon?retryWrites=true&w=majority"
