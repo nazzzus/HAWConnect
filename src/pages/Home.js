@@ -48,6 +48,9 @@ function Home() {
             </div>
             <div className='mainContent'>
             <div className='linkeAnzeige'>
+            <div className='zitatAnzeige'>
+                <Zitat/>
+              </div>
               <div className='infoAnzeige'>
                 <div className='zeitAnzeige'>
                 <Clock />
@@ -55,9 +58,6 @@ function Home() {
                 <div className="wetterAnzeige">
                   <Wetter />
                 </div>
-              </div>
-              <div className='zitatAnzeige'>
-                <Zitat/>
               </div>
             </div>
             <div className='newsAnzeige'>

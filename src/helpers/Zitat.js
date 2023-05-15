@@ -21,7 +21,7 @@ function Zitat() {
       <p>{quote}</p>
       </div>
       <div className='zitatAutor'>
-      <p>{author}</p>
+      <h3>{author}</h3>
     </div>
     </div>
   );

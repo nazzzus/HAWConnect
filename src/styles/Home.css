@@ -11,6 +11,39 @@
     margin-bottom: 5em;
   }
   
+  .linkeAnzeige{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 5em;
+    max-width: 25em;
+  }
+
+  .linkeAnzeige .zitatAnzeige{
+    position: relative;
+    float: right;
+    height: auto;
+    margin-top: 0.5em;
+    margin-left: 1em;
+    margin-right: 1em;
+    background-color: rgba(50, 31, 212, 0.356);
+    border-radius: 16px;
+    padding: 1px 1px;
+    color: #FFF;
+    font-size: 1em;
+    font-weight: 900;
+    text-align: center;
+    box-shadow: 3px 6px rgba(22, 163, 219, 0.2);
+  }
+
+  .linkeAnzeige .zitatAnzeige h3{
+    color: #07090a;
+    font-size: 1em;
+  }
+
+  .linkeAnzeige .zitatAnzeige h1{
+    color: #07090a;
+  }
+
   .newsAnzeige {
     flex: 1;
     min-width: 200px;

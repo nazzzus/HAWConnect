@@ -1,6 +1,7 @@
 .infoAnzeige{
     position: relative;
     float: right;
+    max-height: 5em;
     height: 100%;
     margin-top: 0.5em;
     margin-left: 1em;
