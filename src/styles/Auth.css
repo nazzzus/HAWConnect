@@ -1,5 +1,36 @@
-.auth-container{
-    height: 50%;
-    width: 50%;
+.auth {
+    position: absolute;
+    top: 4%;
+    left: 50%;
+    transform: translate(-40%, -2%);
+    width: 35em;
+    max-width: 35em;
+    padding: 0.5em;
+    background-color: rgb(128, 180, 204);
+    height: auto;
+    border-style: groove;
+    border-radius: 2em;
+  }
+
+.top-auth{
+    height: 90vh;
+}
+
+.bg-auth{
+    height: 100%;
+    background-image: url('../assets/haw.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
     position: relative;
 }
+
+input[type=text], input[type=password] {
+    width: 75%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border-style: groove;
+    border: #9b9393;
+    border-color: blueviolet;
+    border-radius: 2em;
+  }

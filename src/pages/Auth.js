@@ -3,11 +3,19 @@ import { useState } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Auth.css'
 
 function Auth() {
   const [isLoginFormVisible, setIsLoginFormVisible] = useState(true);
 
+  const handleForgotPassword = () => {
+    alert('Passwort vergessen wird noch implementiert!');
+    console.log('Passwort vergessen');
+  }
+
   return (
+    <div className='top-auth'>
+    <div className='bg-auth'>
     <div className='auth'>
       {"  "}
       
@@ -19,6 +27,12 @@ function Auth() {
        <button onClick={() => setIsLoginFormVisible(!isLoginFormVisible)}>
         {isLoginFormVisible ? "Du musst dich noch registrieren?" : "Login"}
       </button>
+      <br/>
+      <button onClick={handleForgotPassword}>
+            Passwort vergessen
+          </button>
+      </div>
+      </div>
       </div>
   )
 }
@@ -69,6 +83,7 @@ const Login = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='username'> Username: </label>
+        <br/>
         <input 
         type='text' 
         id='username'
@@ -78,6 +93,7 @@ const Login = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='password'> Password: </label>
+        <br/>
         <input 
         type='password' 
         id='password'
@@ -137,10 +153,11 @@ const Register = ({label}) => {
   return (
     <div className='auth-container'>  
     <form onSubmit={onSubmit}>
-      <h1> {label} </h1>
-
+      <h1> Registrierung </h1>
+      <h4> Bitte trage deine Daten ein</h4>
       <div className='form-group'>
         <label htmlFor='username'> Username: </label>
+        <br/>
         <input 
         type='text' 
         id='username'
@@ -151,6 +168,7 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='vorname'> Vorname: </label>
+        <br/>
         <input 
         type='text' 
         id='vorname'
@@ -161,6 +179,7 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='nachname'> Nachname: </label>
+        <br/>
         <input 
         type='text' 
         id='nachname'
@@ -172,11 +191,12 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='geschlecht'> Wähle dein Geschlecht: </label>
+        <br/>
         <select id='geschlecht' 
         value={geschlecht} 
         required
         onChange={(event) => setGeschlecht(event.target.value)}>
-          <option value='Leer'>Bitte angeben:</option>
+          <option value='' disabled hidden>Bitte wählen:</option>
           <option value='Männlich'>Männlich</option>
           <option value='Weiblich'>Weiblich</option>
           <option value='Divers'>Divers</option>
@@ -184,12 +204,13 @@ const Register = ({label}) => {
       </div>
 
       <div className='form-group'>
-        <label htmlFor='studiengang'> Wähle dein Geschlecht: </label>
+        <label htmlFor='studiengang'> Wähle deinen Studiengang: </label>
+        <br/>
         <select id='studiengang' 
         value={studiengang} 
         required
         onChange={(event) => setStudiengang(event.target.value)}>
-          <option value='Leer'>Bitte angeben:</option>
+          <option value='' disabled hidden>Bitte wählen:</option>
           <option value='Wirtschaftsinformatik'>Wirtschaftsinformatik</option>
           <option value='Angewandte Informatik'>Angewandte Informatik</option>
           <option value='Informatik Technischer Systeme'>Informatik Technischer Systeme</option>
@@ -199,6 +220,7 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='geburtstag'> Geburtstag: </label>
+        <br/>
         <input 
         type='date' 
         required
@@ -209,6 +231,7 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='email'> E-Mail: </label>
+        <br/>
         <input 
         type='text' 
         id='email'
@@ -219,6 +242,7 @@ const Register = ({label}) => {
 
       <div className='form-group'>
         <label htmlFor='password'> Password: </label>
+        <br/>
         <input 
         type='password' 
         id='password'
