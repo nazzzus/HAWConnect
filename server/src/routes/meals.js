@@ -1,24 +1,22 @@
 import express, { response } from 'express';
 import mongoose from 'mongoose';
-import { MealModel } from "../models/Meals.js";
+import { MealsModel } from "../models/Meals.js";
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/show', async (req, res) => {
     try {
-        const response = await RecipeModel.find({});
+        const response = await MealsModel.find({});
         res.json(response);
     } catch (err) {
         res.json(err);
     }
 });
 
-router.post('/', async (req, res) => {
-    const recipe = new RecipeModel({
-        
-    })
+router.post('/add', async (req, res) => {
+    const meals = new MealsModel( req.body  )
     try {
-        const response = await RecipeModel.find({});
+        const response = await meals.save();
         res.json(response);
     } catch (err) {
         res.json(err);

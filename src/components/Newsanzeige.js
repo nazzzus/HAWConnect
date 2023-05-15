@@ -6,7 +6,7 @@ function Newsanzeige() {
 
   useEffect(() => {
     axios
-    .get("http://localhost:3001/news")
+    .get("http://localhost:3001/news/show")
     .then((response) => {
       setNews(response.data);
     })
