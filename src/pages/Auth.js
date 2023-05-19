@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState} from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
@@ -43,9 +43,11 @@ const Login = ({label}) => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+
   // const [email, setEmail] = useState('');
 
-  const [_, setCookies] = useCookies(['access_token']);
+  const [Cookies, setCookies] = useCookies(['access_token']);
 
   const navigate = useNavigate();
 
@@ -59,14 +61,16 @@ const Login = ({label}) => {
       });
       alert("Login war erfolgreich!");
       setCookies('access_token', response.data.token);
+
       window.localStorage.setItem('userItem', response.data.userID);
       navigate('/'); 
+      window.location.reload();
     }catch (err) {
       console.error(err);
         if (err.response && err.response.data.message === "User doesn't exist!") {
           alert("This username does not exist. Please try again or register first.");
         } else
-          if (err.response && err.response.data.message === "Username or password is incorrect!") {
+          if (err.response && err.response.data.message === "Password is incorrect!") {
             alert("Your password is incorrect. Please try again or reset your password.");
           } 
         else {
@@ -136,6 +140,7 @@ const Register = ({label}) => {
       });
       alert("Registration completed! Now you can login.");
       navigate('/auth'); 
+      window.location.reload();
     } catch (err) {
       console.error(err);
       if (err.response && err.response.data.message === "User already exists!") {

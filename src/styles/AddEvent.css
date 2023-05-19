@@ -1,0 +1,8 @@
+.modal-main{
+    background: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 10vh;
+}

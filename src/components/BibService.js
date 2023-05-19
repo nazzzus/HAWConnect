@@ -1,165 +1,158 @@
-import React, { useRef, useState } from 'react'
-import '../styles/BibService.css'
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import '../styles/Createbook.css';
+import { useGetUserId } from "../hooks/useGetUserId";
 
 function BibService() {
-    const list = [
+
+  const userId = useGetUserId();
+  const [cookies, _] = useCookies(["access_token"]);
+
+  const [book, setBook] = useState({
+    buchtitel: "",
+    buchautor: "",
+    ausleihdatum: "",
+    rueckgabedatum: "",
+    status: "",
+    userOwner: userId,
+  });
+
+  const [bookList, setBookList] = useState([]);
+
+  const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setBook({
+      ...book,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      await axios.post(
+        "http://localhost:3001/book/add",
+        { ...book },
         {
-            id: 1, 
-            buchname: "HP",
-            autor: "2222",
-            ausleihdatum: "24.12.1998",
-            rueckgabedatum: "01.01.1999",
-            status: "aktiv"
-        },
-        {
-            id: 2, 
-            buchname: "Dell",
-            autor: "2445",
-            ausleihdatum: "24.12.1998",
-            rueckgabedatum: "01.01.1999",
-            status: "inaktiv"
-        },
-    ]
-    const [lists, setList] = useState(list)
-    const [updateState, setUpdateState] = useState(-1)
-
-
-    return(
-        <div className='bibService'>
-            <div className='bibServiceTable'>
-            <AddList setList = {setList }/>
-            <form onSubmit={handleSubmit}>
-            <table>
-                <tr>
-                    <th>Buchtitel</th>
-                    <th>Autor</th>
-                    <th>Ausleihdatum</th>
-                    <th>Rückgabedatum</th>
-                    <th>Status</th>
-                </tr>
-                {
-                    lists.map((current) => (
-                        updateState === current.id ? <EditList current={current} lists={lists} setList={setList}/> :
-                        <tr>
-                            <td>{current.buchname}</td>
-                            <td>{current.autor}</td>
-                            <td>{current.ausleihdatum}</td>
-                            <td>{current.rueckgabedatum}</td>
-                            <td>{current.status}</td>
-                            <td>
-                                <button className='edit' onClick={() => handleEdit(current.id)}>Edit</button>
-                            </td>
-                            <td>                        
-                                <button className='extend' onClick={() => handleEdit(current.id)}>Extend</button>
-                                
-                            </td>
-                            <td>
-                                <button className='delete' type='button' onClick={() => handleDelete(current.id)}>Delete</button>
-                            </td>
-                        </tr>
-                    ))
-                }
-                
-            </table>
-            </form>
-            </div>
-        </div>
-    )
-
-    function handleEdit(id) {
-        setUpdateState(id)
-    }
-
-    function handleStatus(id) {
-        setUpdateState(id)
-    }
-
-    function handleDelete(id) {
-        const newlist = lists.filter((li) => li.id !== id)
-        setList(newlist)
-    }
-
-    function handleSubmit(event) {
-        event.preventDefault()
-        const buchname = event.target.elements.buchname.value;
-        const autor = event.target.elements.autor.value;
-        const ausleihdatum = event.target.elements.ausleihdatum.value;
-        const rueckgabedatum = event.target.elements.rueckgabedatum.value;
-        const status = "aktiv";
-        const newlist = lists.map((li) => (
-            li.id === updateState ? {...li, buchname:buchname, autor: autor, ausleihdatum: ausleihdatum, rueckgabedatum: rueckgabedatum, status: status} : li
-        ))
-
-        setList(newlist)
-        setUpdateState(-1)
-    }
-}
-
-function EditList({current, lists, setList}) {
-    function handInputname(event) {
-        const value = event.target.value;
-        const newlist = lists.map((li) => (
-            li.id === current.id ? {...li, name :value} : li
-        ))
-
-        setList(newlist)
-    }
-    function handInputprice(event) {
-        const value = event.target.value;
-        const newlist = lists.map((li) => (
-            li.id === current.id ? {...li, price :value} : li
-        ))
-
-        setList(newlist)
-    }
-    return(
-        <tr>
-            <td><input type="text" onChange={handInputname} name='name' value={current.name}/></td>
-            <td><input type="text" onChange={handInputprice} name='price' value={current.price}/></td>
-            <td><button type='submit'>Update</button></td>
-        </tr>
-    )
-}
-
-function AddList({setList}) {
-    const buchnameRef = useRef()
-    const autorRef = useRef()
-    const lendRef = useRef()
-    const returnRef = useRef()
-
-    function handleSubmit(event) {
-        event.preventDefault();
-        const buchname = event.target.elements.buchname.value;
-        const autor = event.target.elements.autor.value;
-        const ausleihdatum = event.target.elements.ausleihdatum.value;
-        const rueckgabedatum = event.target.elements.rueckgabedatum.value;
-        const status = "aktiv";
-        
-        const newlist = {
-            id: 3,
-            buchname,
-            autor,
-            ausleihdatum,
-            rueckgabedatum,
-            status
+          headers: { authorization: cookies.access_token },
         }
-        setList((prevList)=> {
-            return prevList.concat(newlist)
-        })
-        buchnameRef.current.value = ""
-        autorRef.current.value = ""
-        lendRef.current.value = ""
-        returnRef.current.value = ""
+      );
+      alert("Buch hinzugefügt!");
+      navigate("/bibliothek");
+      window.location.reload();      
+    } catch (err) {
+      console.error(err);
     }
-    return(
-        <form className='addForm' onSubmit={handleSubmit}>
-            <input type="text" name="buchname" placeholder="Buchname" ref={buchnameRef} required/>
-            <input type="text" name="autor" placeholder="Autor/in" ref={autorRef}/>
-            <input type="date" name="ausleihdatum" placeholder="Ausleihdatum" ref={lendRef} required/>
-            <input type="date" name="rueckgabedatum" placeholder="Rückgabedatum" ref={returnRef} required/>
-            <button type="submit">Hinzufügen</button>
+  };
+
+  useEffect(() => {
+    const fetchBooks = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3001/book/user/${book.userOwner}`,
+          {
+            headers: { authorization: cookies.access_token },
+          }
+        );
+        setBookList(response.data.books);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchBooks();
+  }, [book.userOwner, cookies.access_token]);
+
+
+  return (
+    <div className='bibService'>
+      <div className='bibServiceTable'>
+      <form onSubmit={handleSubmit}>
+          <label htmlFor='buchtitel'>
+            Buchtitel
+          </label>
+          <input 
+          type='text' 
+          id='buchtitel' 
+          name='buchtitel' 
+          value={book.buchtitel}
+          onChange={handleChange}
+          />
+          <label htmlFor='buchautor'>
+            Buchautor
+          </label>
+          <input 
+          type='text' 
+          id='buchautor' 
+          name='buchautor' 
+          value={book.buchautor}
+          onChange={handleChange}/>
+
+          <label htmlFor='ausleihdatum'>
+            Ausleihdatum
+          </label>
+          <input 
+          type='date' 
+          id='ausleihdatum' 
+          name='ausleihdatum' 
+          value={book.ausleihdatum}
+          onChange={handleChange}/>
+          <label htmlFor='rueckgabedatum'>
+            Rückgabedatum
+          </label>
+          <input 
+          type='date' 
+          id='rueckgabedatum' 
+          name='rueckgabedatum' 
+          value={book.rueckgabedatum}
+          onChange={handleChange}/>
+          <label htmlFor='status'>
+            Status
+          </label>
+          <input 
+          type='text' 
+          id='status' 
+          name='status' 
+          value={book.status}
+          onChange={handleChange}/>
+
+          <button type='submit'>
+            Buch hinzufügen
+          </button>
         </form>
-    )
+
+        <table className="book-table">
+          <thead>
+            <tr>
+              <th>Buchtitel</th>
+              <th>Autor</th>
+              <th>Ausgeliehen am</th>
+              <th>Rückgabe am</th>
+              <th>Status</th>
+              <th>Aktion</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookList.map((book) => (
+              <tr key={book._id}>
+                <td>{book.buchtitel}</td>
+                <td>{book.buchautor}</td>
+                <td>{book.ausleihdatum}</td>
+                <td>{book.rueckgabedatum}</td>
+                <td>{book.status}</td>
+                <td><button>Löschen</button>
+                <button>Bearbeiten</button></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
 }
 
 export default BibService;

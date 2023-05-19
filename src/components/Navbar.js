@@ -1,20 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import '../styles/Navbar.css'
 import ReorderIcon from '@mui/icons-material/Reorder';
 import Header from '../components/Header'
 import useCookies from 'react-cookie/cjs/useCookies'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+
 
 
 function Navbar() {
 
-    const [cookies, setCookies] = useCookies(['access_token']);
 
+    const [cookies, setCookies] = useCookies(['access_token']);
     const navigate = useNavigate();
 
     const logout = () => {
-        setCookies('access_token', '')
+        setCookies('access_token', '');
         window.localStorage.removeItem("userID");
         navigate('/Auth');
     }
@@ -27,7 +28,7 @@ function Navbar() {
 
   return (
     <div className='navbar'>
-        <div className='leftSide' id={openLinks ? "open" : "close"}>
+       <div className='leftSide' id={openLinks ? "open" : "close"}>
             <div className='logoSide'>
                 <Header/>
             </div>
@@ -78,15 +79,14 @@ function Navbar() {
             <Link to="/profil">
                 <button>Profil</button>
             </Link>
-            <Link to="/einstellungen">
-                <button>Einstellungen</button>
-            </Link>
             {!cookies.access_token ? (
             <Link to="/Auth">
                 <button>Zum Login</button>
             </Link> ): (
-                <button onClick={logout}>Logout</button>)}
-    
+            <Link to="/">   
+                <button onClick={logout}>Logout</button></Link> 
+                )}
+            
             <Link to="https://outlook.de/" target="_blank" rel="noopener noreferrer">
                 <button>Mail</button>
             </Link> 

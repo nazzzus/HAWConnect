@@ -16,6 +16,10 @@
     height: 90vh;
 }
 
+.auth button{
+  margin: 1em;
+}
+
 .bg-auth{
     height: 100%;
     background-image: url('../assets/haw.png');
@@ -25,7 +29,7 @@
     position: relative;
 }
 
-input[type=text], input[type=password] {
+.auth input[type=text], input[type=password] {
     width: 75%;
     padding: 15px;
     margin: 5px 0 22px 0;

@@ -18,6 +18,7 @@ const data = [
 
 function Semester1() {
   return (
+    <div className='sem'>
     <table>
       <thead>
         <tr>
@@ -33,6 +34,7 @@ function Semester1() {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
 

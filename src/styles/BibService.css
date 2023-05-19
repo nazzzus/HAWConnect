@@ -22,7 +22,7 @@
 }
 
 
-table td {
+.bibService table td {
     width: 200px;
     height: 30px;
     background-color: rgb(54, 135, 211);
@@ -30,36 +30,36 @@ table td {
     color: white;
 }
 
-table td button {
+.bibService table td button {
     padding: 5px 10px;
     border-radius: 5%;
     cursor: pointer;
 }
-table td button.edit {
+.bibService table td button.edit {
     border: 1px solid green;
     background-color: rgb(7, 168, 7);
     color: white;
 }
-table td button.edit:hover {
+.bibService table td button.edit:hover {
     background-color: rgb(3, 71, 3);
 }
-table td button.delete {
+.bibService table td button.delete {
     border: 1px solid red;
     background-color: rgb(219, 19, 19);
     color: white;
 }
 
-table td button.extend {
+.bibService table td button.extend {
     border: 1px solid rgb(255, 174, 0);
     background-color: rgb(255, 174, 0);
     color: white;
 }
 
-table td button.delete:hover {
+.bibService table td button.delete:hover {
     background-color: rgb(92, 5, 5);
 }
 
-.addForm {
+.bibService .addForm {
     width: 70vw;
     height: auto;
     grid-template-columns: 1fr 1fr 1fr;
@@ -68,17 +68,17 @@ table td button.delete:hover {
     margin-bottom: 1em;
 }
 
-.addForm input {
+.bibService .addForm input {
     width: 230px;
     height: 30px;
 }
 
-.addForm button {
+.bibService .addForm button {
     width: 135px;
     color: white;
     height: 35px;
     background-color: rgb(31, 171, 31);
 }
-.addForm button:hover {
+.bibService .addForm button:hover {
     background-color: rgb(5, 86, 5);
 } 

@@ -19,15 +19,16 @@
     position: relative;
 }
 
-th, td {
+.Bibliothek th, td {
     border: 1px solid black;
 }
 
-table {
+.Bibliothek table {
     border-collapse: collapse;
     width: 100%;
     max-width: 100%;
 }
+
 .Bibliothek .BibTitleText{
     width: 100%;
     margin-top: 1em;

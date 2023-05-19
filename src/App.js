@@ -1,4 +1,5 @@
 import './App.css';
+
 //components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -7,7 +8,6 @@ import Home from './pages/Home';
 import Kurse from './semesterPages/Kurse';
 import Bibliothek from './pages/Bibliothek';
 import Planer from './pages/Planer';
-import Einstellungen from './pages/Einstellungen';
 import Profil from './pages/Profil';
 import Auth from './pages/Auth';
 import Create from './pages/Create';
@@ -16,7 +16,7 @@ import Mensa from './pages/Mensa';
 import Impressum from './pages/Impressum';
 //helpers
 import BibList from './helpers/BibList';
-import Kalender from './helpers/Kalender';
+import Kalender from './components/Kalender';
 import Stundenplan from './helpers/Stundenplan';
 import {BrowserRouter as Router, Route, Routes as Switch} from 'react-router-dom';
 import React, {useEffect, useState } from 'react';
@@ -24,6 +24,7 @@ import News from './components/Newsanzeige';
 import CreateBook from './helpers/create-book'
 import Viewbook from './helpers/view-book';
 import Zitat from './helpers/Zitat';
+
 //semesterPages
 import Semester1 from './semesterPages/Semester1';
 import Semester2 from './semesterPages/Semester2';
@@ -34,6 +35,8 @@ import Semester6 from './semesterPages/Semester6';
 //pläne
 import Pruefungsplan from './pages/Pruefungsplan'
 
+import KeineSeite from './pages/KeineSeite';
+import Schedule from './helpers/Schedule';
 
 
 
@@ -69,6 +72,8 @@ function App() {
           <Route path='/Createbook' exact element={<CreateBook/>} />
           <Route path='/Viewbook' exact element={<Viewbook/>} />
           <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
+          <Route path='/Schedule' exact element={<Schedule/>} />
+          <Route path='*' exact element={<KeineSeite/>} />
         </Switch>
         <Footer />
       </Router>

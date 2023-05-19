@@ -22,7 +22,7 @@ function Newsanzeige() {
         <tr>
           <th>Titel</th>
           <th>Autor</th>
-          <th>Datum</th>
+          <th>Datum</th> 
           <th>Veröffentlicht am</th>
         </tr>
         </thead>

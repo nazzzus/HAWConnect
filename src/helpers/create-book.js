@@ -3,6 +3,7 @@ import axios from "axios";
 import { useGetUserId } from "../hooks/useGetUserId";
 import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import '../styles/Createbook.css'
 
 
 export const CreateBook = () => {
@@ -104,6 +105,27 @@ export const CreateBook = () => {
             Buch hinzufügen
           </button>
         </form>
+        <table className="book-table">
+        <thead>
+        <tr>
+          <th>Buchtitel</th>
+          <th>Autor</th>
+          <th>Ausgeliehen am</th>
+          <th>Rückgabe am</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{book.buchtitel}</td>
+            <td>{book.buchautor}</td>
+            <td>{book.ausleihdatum}</td>
+            <td>{book.rueckgabedatum}</td>
+            <td>{book.status}</td>
+          </tr>
+        
+        </tbody>
+      </table>
       </div>
   )
 }

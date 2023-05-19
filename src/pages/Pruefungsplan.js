@@ -20,22 +20,23 @@ function Pruefungsplan() {
 
     const startExamDate = new Date('2023-07-03');
     const endExamDate = new Date('2023-07-23');
-    const examWeeks = [];
     let currentExamDate = startExamDate;
 
-    while (currentExamDate <= endExamDate) {
-        const examWeek = [];
+    const examWeeks = [];
 
-        for (let i = 0; i < 7; i++) {
-            const examDate = new Date(currentExamDate);
-            examDate.setDate(examDate.getDate() + i);
-            const exam = exams.find((exam) => new Date(exam.datum).toDateString() === examDate.toDateString());
-            examWeek.push({ date: examDate, exam: exam });
-        }
+  while (currentExamDate <= endExamDate) {
+    const examWeek = [];
 
-        examWeeks.push(examWeek);
-        currentExamDate.setDate(currentExamDate.getDate() + 7);
+    for (let i = 0; i < 7; i++) {
+      const examDate = new Date(currentExamDate);
+      examDate.setDate(examDate.getDate() + i);
+      const examsOnDay = exams.filter((exam) => new Date(exam.datum).toDateString() === examDate.toDateString());
+      examWeek.push({ date: examDate, exams: examsOnDay });
     }
+
+    examWeeks.push(examWeek);
+    currentExamDate.setDate(currentExamDate.getDate() + 7);
+  }
 
     return (
         <div className='main-plan'>
@@ -51,17 +52,24 @@ function Pruefungsplan() {
                         {examWeek.map((examDay, index) => (
                             <div className='main-content-row-item' key={index}>
                                 <div className='item-info'>
-                                <p>{examDay.date.toLocaleDateString(undefined, { weekday: 'long' })} - {examDay.date.toLocaleDateString()}</p>
-                                    {examDay.exam ? (
-                                        <div className='exam-info'>
-                                            <p>Modul: {examDay.exam.modul}</p>
-                                            <p>Prüfer: {examDay.exam.prof}</p>
-                                            <p>Raum: {examDay.exam.raum}</p>
-                                            <p>Klausurart: {examDay.exam.art}</p>
-                                            <p>Klausurtyp: {examDay.exam.typ}</p>
+                                <strong><p>{examDay.date.toLocaleDateString(undefined, { weekday: 'long' })} - {examDay.date.toLocaleDateString()}</p></strong>
+                                    {examDay.exams.length > 0 ? (
+                                <div className="exam-info">
+                                    {examDay.exams.map((exam, index) => (
+                                     <div key={index}>
+                                        <div className='exam-info-name'>  <strong><p>{exam.modul}</p> </strong></div>
+                                        <div className='exam-info-rest'> 
+                                        <p>Prüfer: {exam.prof}</p>
+                                        <p>Raum: {exam.raum}</p>
+                                        <p>Klausurart: {exam.art}</p>
+                                        <p>Klausurtyp: {exam.typ}</p>
                                         </div>
+                                        
+                                    </div>
+                                         ))}
+                                    </div>
                                     ) : (
-                                        <p><br/><br/>Keine Prüfung an diesem Tag!</p>
+                                        <p><br /><br />Keine Prüfung an diesem Tag!</p>
                                     )}
                                 </div>
                             </div>

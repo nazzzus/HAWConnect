@@ -15,26 +15,27 @@ function Profil() {
     return (
         <div className='Profil'>
             <div className='ProfilContent'>
-            <div className='ProfilBild'>
-                <img src={pfp}/>;
-            </div>
-            <div>
+                <div className='ProfilBild'>
+                <img src={pfp}/>
+                </div>
+                <div>
                 <label for="image">Upload Image</label>
                 <input type="file" id="image" name="image" value="" required />
-            </div>
-            <div className='ProfilInfo'>
+                </div>
+                <div className='ProfilInfo'>
                 <h1>Mein Profil</h1>
                 <h2>Benutzername:</h2>
                 <h2>E-mail:</h2>
                 <h2>Semester:</h2>
                 <h2>Belegte Module:</h2>
                 <h2>Bestandene Module:</h2>
-            </div>
+                </div>
             </div>
             <div className='ProfilAenderungen'>
                 <Button type='button'>
                     Daten ändern
                 </Button>
+                <input type='text'></input>
                 <Button type='button'>
                     Änderungen speichern
                 </Button>

@@ -49,38 +49,38 @@ router.post("/register", async(req, res) => {
 
 
 router.post("/login", async (req, res) => {
-    const { username, password } = req.body;
-    
-    const user = await UserModel.findOne({username: username});
+  const { username, password } = req.body;
+  
+  const user = await UserModel.findOne({username: username});
 
-    if(!user) {
-        return res.status(400).json({   message: "User doesn't exist!"  });
-    }
+  if(!user) {
+      return res.status(400).json({   message: "User doesn't exist!"  });
+  }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+  const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if(!isPasswordValid){
-        return res.status(400).json({   message: "Password is incorrect!"   });
-    }
+  if(!isPasswordValid){
+      return res.status(400).json({   message: "Password is incorrect!"   });
+  }
 
 
-    const token = jwt.sign({    id: user._id    }, "secret"    );
-    res.json({token, userID: user._id});
+  const token = jwt.sign({    id: user._id    }, "secret"    );
+  res.json({token, userID: user._id});
 });
 
 
 export {router as userRouter};
 
 export const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (authHeader) {
-      jwt.verify(authHeader, "secret", (err) => {
-        if (err) {
-          return res.sendStatus(403);
-        }
-        next();
-      });
-    } else {
-      res.sendStatus(401);
-    }
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    jwt.verify(authHeader, "secret", (err) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
 };

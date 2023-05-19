@@ -7,8 +7,9 @@
 
   .mainContent {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap:nowrap;
     margin-bottom: 5em;
+    align-items: flex-start;
   }
   
   .linkeAnzeige{
@@ -74,6 +75,11 @@
     }
   }
   
+  .mainContent {
+    display: flex;
+    margin-bottom: 5em;
+    align-items: flex-start;
+  }
 
   .benachrichtigungen{
     position: relative;
@@ -155,6 +161,13 @@
       justify-content: center;
       align-items: center;
     }
+
+    .mainContent {
+      flex-direction: column;
+      margin-bottom: 5em;
+      align-items: normal;
+    }
+    
   
     .headerContainer {
       height: 15em;
@@ -193,3 +206,23 @@
     }
   }
 
+
+  @media only screen and (max-width: 920px) {
+    .home {
+      justify-content: center;
+      align-items: normal;
+    }
+
+    .linkeAnzeige {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 1em;
+      max-width: 25em;
+  }
+
+    .mainContent {
+      flex-direction: column;
+      margin-bottom: 5em;
+      align-items: normal;
+    }
+  }

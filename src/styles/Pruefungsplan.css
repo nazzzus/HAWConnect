@@ -24,17 +24,16 @@
     min-width: 13em;
     max-width: 13em;
     margin: 1em;
+    overflow: hidden;
 }
 
 .main-content .main-content-row-item .item-info{
     position: relative;
-    font-size: 1em;
     padding: 0em;
 }
 
 .main-content .main-content-row-item .item-info p{
     position: relative;
-    font-size: 1em;
     padding: 0em;
     margin-block-start: 0em;
     margin-block-end: 0em;
@@ -45,6 +44,9 @@
 .exam-info{
     display: grid;
     padding: 0px;
+    padding-left: 1em;
+    padding-right: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 .exam-info p {
@@ -54,3 +56,98 @@
     margin-inline-start: 0px;
     margin-inline-end: 0px;
 }
+
+
+.exam-info-name p {
+    font-size: 1em;
+    word-break: break-word; 
+  }
+  
+
+.exam-info-rest p {
+    display: grid;
+    margin-block-start: 0em;
+    margin-block-end: 0em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    font-size: 10px;
+    text-align:initial;
+    color: black;
+}
+
+@media only screen and (max-width: 600px) {
+    .main-content {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .main-content .main-content-row {
+      flex-direction: column;
+    }
+    
+    .main-content .main-content-row-item {
+      width: 100%;
+      max-width: none;
+      margin: 1em 0;
+    }
+
+    .exam-info-rest p {
+        display: grid;
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-size: 10px;
+        text-align:center;
+        color: black;
+    }
+  }
+  
+  @media only screen and (max-width: 992px){
+    .main-content {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .main-content .main-content-row {
+        flex-direction: column;
+      }
+      
+      .main-content .main-content-row-item {
+        width: 20em;
+        max-width: none;
+        margin: 1em 0;
+      }
+
+      .exam-info-rest p {
+        display: grid;
+        margin-block-start: 0em;
+        margin-block-end: 0em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        font-size: 1em;
+        text-align:center;
+        color: black;
+    }
+  }
+
+  @media only screen and (max-width: 1500px){
+    .main-content {
+        align-items: normal;
+      }
+      
+      .main-content .main-content-row {
+        flex-direction: row;
+    display: flex;
+    flex-wrap: wrap;
+      }
+      
+      .main-content .main-content-row-item {
+        margin: 1em;
+      }
+      
+  }
+
+
+
+  
