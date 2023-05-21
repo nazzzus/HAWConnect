@@ -23,5 +23,30 @@ router.post('/add', async (req, res) => {
     }
 });
 
+router.get('/menus/weekly', async (req, res) => {
+    try {
+      // Bestimme den aktuellen Wochentag und das aktuelle Datum
+      const currentDate = new Date();
+      const currentDay = currentDate.getDay(); // 0 (Sonntag) bis 6 (Samstag)
+  
+      // Berechne das Start- und Enddatum der aktuellen Woche
+      const startDate = new Date(currentDate);
+      startDate.setDate(currentDate.getDate() - currentDay); // Setze auf den Montag der aktuellen Woche
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6); // Setze auf den Sonntag der aktuellen Woche
+  
+      // Rufe die Menüs für die aktuelle Woche aus der Datenbank ab
+      const menus = await MealsModel.find({
+        datum: { $gte: startDate, $lte: endDate },
+      });
+  
+      res.json(menus);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+  });
+  
+
 export {router as mealsRouter};
 

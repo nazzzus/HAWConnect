@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useGetUserId } from "../hooks/useGetUserId";
 import { useCookies } from "react-cookie";
 import moment from 'moment';
+import Swal from 'sweetalert2';
 import '@fullcalendar/core/locales/de';
 
 
@@ -29,6 +30,23 @@ const Kalender = () => {
   const handleEventClick = (info) => {
     const event = info.event;
   
+    Swal.fire({
+      title: 'Wählen Sie eine Option',
+      input: 'select',
+      inputOptions: {
+        option1: 'Termin löschen',
+        option2: 'Termin bearbeiten',
+      },
+      inputPlaceholder: 'Wählen Sie eine Option',
+      showCancelButton: true,
+      cancelButtonText: 'Abbrechen',
+      confirmButtonText: 'Auswählen'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const selectedOption = result.value;
+        console.log('Ausgewählte Option:', selectedOption);
+      }
+    });
     // Set the event to edit
     setEditEvent(event);
   
@@ -115,11 +133,33 @@ const Kalender = () => {
     const timeRange = `${startTime}-${endTime}`;
     event.setExtendedProp('timeRange', timeRange);
   };
+
+  const handleDateClick = (arg) => {
+    Swal.fire({
+      title: 'Wählen Sie eine Option',
+      input: 'select',
+      inputOptions: {
+        option1: 'Termin hinzufügen',
+        option2: 'Termin bearbeiten',
+        option3: 'Termin löschen'
+      },
+      inputPlaceholder: 'Wählen Sie eine Option',
+      showCancelButton: true,
+      cancelButtonText: 'Abbrechen',
+      confirmButtonText: 'Auswählen'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const selectedOption = result.value;
+        console.log('Ausgewählte Option:', selectedOption);
+      }
+    });
+    console.log('Date clicked: ', arg.date);
+  };
   
 
   return (
     <section>
-      <button onClick={() => setModalOpen(true)}>Add Event</button>
+      <button onClick={() => setModalOpen(true)}>Füge einen Termin hinzu</button>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale="de"
@@ -127,6 +167,7 @@ const Kalender = () => {
           events={events}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
           eventClick={handleEventClick}
+          dateClick={handleDateClick}
           initialView={'dayGridMonth'}
           headerToolbar={{
             start: 'today prev,next',

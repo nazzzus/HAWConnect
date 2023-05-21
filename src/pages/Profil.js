@@ -1,58 +1,56 @@
-import { Button } from '@mui/material'
-import Profilbild from '../assets/Profilbild.png'
-import React from 'react'
-import pfp from '../assets/Profilbild.png'
-import '../styles/Profil.css'
-import  { useState } from "react";
-import axios from "axios";
-import { useGetUserId } from "../hooks/useGetUserId";
-import { useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useCookies } from 'react-cookie';
+import { useGetUserId } from '../hooks/useGetUserId';
 
+const Profil = () => {
+  const [user, setUser] = useState(null);
+  const userId = useGetUserId();
+  const [cookies, _] = useCookies(["access_token"]);
 
-function Profil() {
-    
-    return (
-        <div className='Profil'>
-            <div className='ProfilContent'>
-                <div className='ProfilBild'>
-                <img src={pfp}/>
-                </div>
-                <div>
-                <label for="image">Upload Image</label>
-                <input type="file" id="image" name="image" value="" required />
-                </div>
-                <div className='ProfilInfo'>
-                <h1>Mein Profil</h1>
-                <h2>Benutzername:</h2>
-                <h2>E-mail:</h2>
-                <h2>Semester:</h2>
-                <h2>Belegte Module:</h2>
-                <h2>Bestandene Module:</h2>
-                </div>
-            </div>
-            <div className='ProfilAenderungen'>
-                <Button type='button'>
-                    Daten ändern
-                </Button>
-                <input type='text'></input>
-                <Button type='button'>
-                    Änderungen speichern
-                </Button>
-                <Button type='button'>
-                    Passwort ändern
-                </Button>
-                <Button type='button'>
-                    Konto löschen
-                </Button>
-            </div>
-        </div>
-    )
-}
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("de-DE");
+  };
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/notis/user/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${cookies.access_token}` // Setzen Sie den access_token im Header
+          }
+        });
 
+        setUser(response.data.user);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
+    fetchUserProfile();
+  }, [userId, cookies.access_token]);
 
-export default Profil
+  const handleProfilePictureUpload = () => {
+    // Handle logic for profile picture upload here
+  };
 
+  if (!user) {
+    return <div>Loading...</div>;
+  }
 
+  return (
+    <div>
+      <h2>User Profile</h2>
+      <p>Username: {user.username}</p>
+      <p>Vorname: {user.vorname}</p>
+      <p>Nachname: {user.nachname}</p>
+      <p>Geschlecht: {user.geschlecht}</p>
+      <p>Studiengang: {user.studiengang}</p>
+      <p>Geburtstag: {formatDate(user.geburtstag)}</p>
+      <p>Email: {user.email}</p>
+    </div>
+  );
+};
+
+export default Profil;

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import '../styles/Auth.css'
+import Swal from 'sweetalert2';
 
 function Auth() {
   const [isLoginFormVisible, setIsLoginFormVisible] = useState(true);
@@ -59,19 +60,66 @@ const Login = ({label}) => {
         password,
         label,
       });
-      alert("Login war erfolgreich!");
-      setCookies('access_token', response.data.token);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'success',
+        title: 'Du hast dich erfolgreich angemeldet.'
+      }).then(() => {
+        setCookies('access_token', response.data.token);
 
       window.localStorage.setItem('userItem', response.data.userID);
       navigate('/'); 
       window.location.reload();
+      })
+  
     }catch (err) {
       console.error(err);
         if (err.response && err.response.data.message === "User doesn't exist!") {
-          alert("This username does not exist. Please try again or register first.");
+          const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 5000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+          
+          Toast.fire({
+            icon: 'error',
+            title: 'Username ist falsch oder es gibt ihn nicht. Versuch es nochmal!'
+          })
         } else
           if (err.response && err.response.data.message === "Password is incorrect!") {
-            alert("Your password is incorrect. Please try again or reset your password.");
+            const Toast = Swal.mixin({
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 5000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+              }
+            })
+            
+            Toast.fire({
+              icon: 'error',
+              title: 'Das Passwort ist falsch. Versuch es nochmal oder setz dein Passwort zurück!'
+            })
           } 
         else {
           alert("An error occurred. Please try again later.");

@@ -25,6 +25,7 @@ function Semester1() {
           <th>Module</th>
           <th>Belegt</th>
           <th>Bestanden</th>
+          <th>Note</th>
           <th>Informationen</th>
         </tr>
       </thead>

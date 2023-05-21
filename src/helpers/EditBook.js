@@ -6,9 +6,6 @@ import Datetime from 'react-datetime';
 import axios from "axios";
 import { useCookies } from "react-cookie";
 import '../styles/AddEvent.css';
-import Swal from 'sweetalert2';
-
-// Importiere moment und die deutsche Lokalisierung
 import moment from 'moment';
 import 'moment/locale/de';
 import { useNavigate } from "react-router-dom";
@@ -77,21 +74,12 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
             authorization: cookies.access_token
           },
         });
-        Swal.fire({
-          title: 'Termin wurde hinzugefügt!',
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          }
-        }).then(() => {
-          navigate('/Kalender');
-          window.location.reload();
-          if (onEventAdded) {
-            onEventAdded();
-          }
-        });
+        alert('Termin hinzugefügt!');
+        navigate('/Kalender'); 
+        window.location.reload();
+        if (onEventAdded) {
+          onEventAdded();
+        }
       } catch (err) {
         console.error(err);
       }
@@ -100,7 +88,7 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>
-      <div className="modal-main">
+      <div className="-book-modal-main">
         <form onSubmit={handleSubmit}>
           <input placeholder='Titel' value={events.title} onChange={(event) => handleChange('title', event.target.value)} />
 

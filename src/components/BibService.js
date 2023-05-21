@@ -4,11 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import '../styles/Createbook.css';
 import { useGetUserId } from "../hooks/useGetUserId";
+import Swal from 'sweetalert2';
+
 
 function BibService() {
-
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [book, setBook] = useState({
     buchtitel: "",
@@ -41,9 +43,25 @@ function BibService() {
           headers: { authorization: cookies.access_token },
         }
       );
-      alert("Buch hinzugefügt!");
+      const Toast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+      })
+      
+      Toast.fire({
+        icon: 'success',
+        title: 'Das Buch wurde hinzugefügt!'
+      }).then(() => {
       navigate("/bibliothek");
-      window.location.reload();      
+      window.location.reload();
+})
     } catch (err) {
       console.error(err);
     }
@@ -67,73 +85,82 @@ function BibService() {
     fetchBooks();
   }, [book.userOwner, cookies.access_token]);
 
+  const handleDelete = async (bookId) => {
+    try {
+      await axios.delete(`http://localhost:3001/book/${bookId}`, {
+        headers: { authorization: cookies.access_token },
+      });
+
+      alert("Buch gelöscht!");
+      const updatedBookList = bookList.filter((book) => book._id !== bookId);
+      setBookList(updatedBookList);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleEdit = (bookId) => {
+    navigate(`http://localhost:3001/book/${bookId}/bearbeiten`);
+  };
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("de-DE");
+  };
 
   return (
     <div className='bibService'>
       <div className='bibServiceTable'>
-      <form onSubmit={handleSubmit}>
-          <label htmlFor='buchtitel'>
-            Buchtitel
-          </label>
-          <input 
-          type='text' 
-          id='buchtitel' 
-          name='buchtitel' 
-          value={book.buchtitel}
-          onChange={handleChange}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor='buchtitel'>Buchtitel</label>
+          <input
+            type='text'
+            id='buchtitel'
+            name='buchtitel'
+            value={book.buchtitel}
+            onChange={handleChange}
+            required
           />
-          <label htmlFor='buchautor'>
-            Buchautor
-          </label>
-          <input 
-          type='text' 
-          id='buchautor' 
-          name='buchautor' 
-          value={book.buchautor}
-          onChange={handleChange}/>
+          <label htmlFor='buchautor'>Buchautor</label>
+          <input
+            type='text'
+            id='buchautor'
+            name='buchautor'
+            value={book.buchautor}
+            onChange={handleChange}
+          />
 
-          <label htmlFor='ausleihdatum'>
-            Ausleihdatum
-          </label>
-          <input 
-          type='date' 
-          id='ausleihdatum' 
-          name='ausleihdatum' 
-          value={book.ausleihdatum}
-          onChange={handleChange}/>
-          <label htmlFor='rueckgabedatum'>
-            Rückgabedatum
-          </label>
-          <input 
-          type='date' 
-          id='rueckgabedatum' 
-          name='rueckgabedatum' 
-          value={book.rueckgabedatum}
-          onChange={handleChange}/>
-          <label htmlFor='status'>
-            Status
-          </label>
-          <input 
-          type='text' 
-          id='status' 
-          name='status' 
-          value={book.status}
-          onChange={handleChange}/>
+          <label htmlFor='ausleihdatum'>Ausleihdatum</label>
+          <input
+            type='date'
+            id='ausleihdatum'
+            name='ausleihdatum'
+            value={book.ausleihdatum}
+            onChange={handleChange}
+            required
+          />
+          <label htmlFor='rueckgabedatum'>Rückgabedatum</label>
+          <input
+            type='date'
+            id='rueckgabedatum'
+            name='rueckgabedatum'
+            value={book.rueckgabedatum}
+            onChange={handleChange}
+            required
+          />
 
-          <button type='submit'>
-            Buch hinzufügen
-          </button>
+          <button type='submit'>Buch hinzufügen</button>
         </form>
 
-        <table className="book-table">
+        <table className='book-table'>
           <thead>
             <tr>
               <th>Buchtitel</th>
               <th>Autor</th>
               <th>Ausgeliehen am</th>
               <th>Rückgabe am</th>
-              <th>Status</th>
-              <th>Aktion</th>
+              <th>Zum Löschen</th>
+              <th>Zum Bearbeiten</th>
             </tr>
           </thead>
           <tbody>
@@ -141,11 +168,18 @@ function BibService() {
               <tr key={book._id}>
                 <td>{book.buchtitel}</td>
                 <td>{book.buchautor}</td>
-                <td>{book.ausleihdatum}</td>
-                <td>{book.rueckgabedatum}</td>
-                <td>{book.status}</td>
-                <td><button>Löschen</button>
-                <button>Bearbeiten</button></td>
+                <td>{formatDate(book.ausleihdatum)}</td>
+                <td>{formatDate(book.rueckgabedatum)}</td>
+                <td>
+                  <button onClick={() => handleDelete(book._id)}>
+                    Löschen
+                  </button>
+                </td>
+                <td>
+                  <button onClick={() => setModalOpen(true)}>
+                    Bearbeiten
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

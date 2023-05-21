@@ -37,6 +37,7 @@ import Pruefungsplan from './pages/Pruefungsplan'
 
 import KeineSeite from './pages/KeineSeite';
 import Schedule from './helpers/Schedule';
+import ProfileImages from './helpers/ProfileImages';
 
 
 
@@ -73,6 +74,7 @@ function App() {
           <Route path='/Viewbook' exact element={<Viewbook/>} />
           <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
           <Route path='/Schedule' exact element={<Schedule/>} />
+          <Route path='ProfileImages' exact element={<ProfileImages/>} />
           <Route path='*' exact element={<KeineSeite/>} />
         </Switch>
         <Footer />

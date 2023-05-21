@@ -46,11 +46,11 @@
   }
 
   .newsAnzeige {
-    flex: 1;
     min-width: 200px;
     height: 200px;
     background-color: #ddd;
     margin: 10px;
+    width: auto;
   }
   
   .todo {

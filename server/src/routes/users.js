@@ -2,8 +2,11 @@ import express from "express";
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { UserModel } from "../models/Users.js";
+import moment from "moment";
+
 
 const router = express.Router();
+
 
 router.post("/register", async(req, res) => {
     const { 
@@ -69,18 +72,39 @@ router.post("/login", async (req, res) => {
 });
 
 
+
+
+
+// Funktion zum Vergleichen des Geburtstags mit dem aktuellen Tag
+export const sendBirthdayWishes = async () => {
+  // Aktuelles Datum
+  const currentDate = moment().format("MM-DD");
+
+  // Benutzer mit Geburtstag am aktuellen Tag abrufen
+  const users = await UserModel.find({ geburtstag: { $regex: currentDate } });
+
+  // Glückwunschtext generieren
+  const wishes = users.map((user) => `Herzlichen Glückwunsch, ${user.username}! Alles Gute zum Geburtstag!`);
+
+  // Ausgabe der Glückwünsche
+  console.log(wishes);
+  // oder: return wishes; // Wenn Sie die Glückwünsche zurückgeben möchten
+};
+
+
 export {router as userRouter};
 
 export const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
-    jwt.verify(authHeader, "secret", (err) => {
-      if (err) {
-        return res.sendStatus(403);
-      }
-      next();
-    });
-  } else {
-    res.sendStatus(401);
-  }
+  jwt.verify(authHeader, "secret", { algorithms: ["HS256"] }, (err) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    next();
+  });
+} else {
+  return res.sendStatus(403);
+}
+
 };

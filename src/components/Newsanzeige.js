@@ -4,6 +4,11 @@ import axios from "axios";
 function Newsanzeige() {
   const [news, setNews] = useState([]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("de-DE");
+  };
+
   useEffect(() => {
     axios
     .get("http://localhost:3001/news/show")
@@ -31,8 +36,8 @@ function Newsanzeige() {
           <tr key={n._id}>
             <td>{n.titel}</td>
             <td>{n.autor}</td>
-            <td>{n.datum}</td>
-            <td>{n.erstelltAm}</td>
+            <td>{formatDate(n.datum)}</td>
+            <td>{formatDate(n.erstelltAm)}</td>
           </tr>
         ))}
         </tbody>

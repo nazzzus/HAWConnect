@@ -27,6 +27,7 @@ function TableRow({ module, belegt, bestanden, image }) {
       <td>{module}</td>
       <td><button onClick={handleBelegtToggle}>{isBelegt ? '★' : '☆'}</button></td>
       <td><button onClick={handleBestandenToggle}>{isBestanden ? '✔' : '✘'}</button></td>
+      <td><input type='text'></input> <button>Speichern</button></td>
       <td><button onClick={handleImageClick}>Mehr Informationen</button></td>
       {isImageVisible && <td><img src={image} alt="Bild" /></td>}
     </tr>

@@ -5,7 +5,7 @@ import ReorderIcon from '@mui/icons-material/Reorder';
 import Header from '../components/Header'
 import useCookies from 'react-cookie/cjs/useCookies'
 import { useNavigate } from 'react-router-dom';
-
+import Swal from 'sweetalert2';
 
 
 function Navbar() {
@@ -17,8 +17,28 @@ function Navbar() {
     const logout = () => {
         setCookies('access_token', '');
         window.localStorage.removeItem("userID");
-        navigate('/Auth');
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1500,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener('mouseenter', Swal.stopTimer)
+              toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+          })
+          
+          Toast.fire({
+            icon: 'success',
+            title: 'Du hast dich erfolgreich abgemeldet.'
+            }).then(() => {
+                navigate('/Auth');
+          })
+     
     }
+
+    
 
     const [openLinks, setOpenLinks] = useState(false);
 
@@ -28,30 +48,8 @@ function Navbar() {
 
   return (
     <div className='navbar'>
-       <div className='leftSide' id={openLinks ? "open" : "close"}>
-            <div className='logoSide'>
+       <div className='leftSide'>
                 <Header/>
-            </div>
-            <div className='hiddenLinks'>
-            <Link to="/">
-                <p>Home         
-                </p>
-            </Link>
-            <Link to="/planer">
-                <p>Planer
-                </p>
-            </Link>
-            <Link to="/kurse">
-            <p>Kurse
-                </p>
-            </Link>
-            <Link to="/mensa">
-            <p>Mensa</p>
-            </Link>
-            <Link to="/bibliothek">
-            <p>Bibliothek</p>
-            </Link>
-            </div>
         </div>
 
         <div className='midSide'>
@@ -70,9 +68,6 @@ function Navbar() {
             <Link to="/bibliothek">
                 Bibliothek
             </Link>
-            <button onClick={toggleNavbar}>
-            <ReorderIcon />
-            </button>
         </div>
 
         <div className='rightSide'>
