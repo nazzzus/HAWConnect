@@ -1,5 +1,79 @@
-.Profil .ProfilContent{
+.Profil .ProfilInfo{
     width: 100%;
     height: auto;
     display: flex;
+}
+
+.ProfilTitle{
+    margin-bottom: 1em;
+}
+.Profil .ProfilInfo {
+    position:relative;
+    width: auto;
+    max-width: 35em;
+    height: auto;
+    flex-direction: column;
+    text-align: left;
+}
+
+.Profil .ProfilButton{
+    position: relative;
+    width: 100%;
+    border-style: groove;
+    border: #9b9393;
+    border-color: rgb(140, 125, 154);
+    border-radius: 2em;
+    margin-top: 0.5em;
+    flex-direction: column;
+}
+
+.ProfilButton .ButtonRow{
+    display: flex;
+}
+
+.ProfilButton Button{
+    width: 15em;
+    align-self: center;
+    align-items: center;
+    align-content: center;
+    margin-left: 4em;
+    margin-bottom: 1em;
+}
+
+.window-Profil{
+    position: relative;
+    top: 4%;
+    left: 50%;
+    transform: translate(-50%, 1.5%);
+    width: 35em;
+    max-width: 35em;
+    padding: 0.5em;
+    background-color: rgb(128, 180, 204);
+    height: auto;
+    border-style: groove;
+    border-radius: 2em;
+}
+
+.ProfilInfo h1{
+    text-align: center;
+}
+
+
+.ProfilInfo p{
+    font-size: 1.5em;
+}
+
+.ProfilName-Teil{
+    display: flex;
+}
+
+
+.ProfilName-Teil p{
+    justify-content: center;
+    display: block;
+    text-align: center;
+    margin-block-start: 0.83em;
+    margin-block-end: 0.83em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
 }

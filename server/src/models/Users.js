@@ -15,6 +15,7 @@ const UserSchema = new mongoose.Schema({
     savedTasks: [{type: mongoose.Schema.Types.ObjectId, ref: 'Tasks'}],
     savedEvents: [{type: mongoose.Schema.Types.ObjectId, ref: 'Events'}],
     role: {type: String, required: false, default: 'student'},
+    semester: {type: Number, required: false, default: 0},
     savedProfileImage: { type: mongoose.Schema.Types.ObjectId, ref: 'ProfileImage' },
 });
 

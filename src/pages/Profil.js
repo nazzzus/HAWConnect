@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useGetUserId } from '../hooks/useGetUserId';
+import '../styles/Profil.css'
 
 const Profil = () => {
   const [user, setUser] = useState(null);
@@ -40,16 +41,63 @@ const Profil = () => {
   }
 
   return (
-    <div>
-      <h2>User Profile</h2>
-      <p>Username: {user.username}</p>
-      <p>Vorname: {user.vorname}</p>
-      <p>Nachname: {user.nachname}</p>
-      <p>Geschlecht: {user.geschlecht}</p>
-      <p>Studiengang: {user.studiengang}</p>
-      <p>Geburtstag: {formatDate(user.geburtstag)}</p>
-      <p>Email: {user.email}</p>
-    </div>
+          <div className='Profil'>
+            <div className='bg-Profil'>
+              <div className='window-Profil'>
+                <div className='ProfilInfo'>
+                  <div className='ProfilTitle'>
+                    <h1>User Profile</h1>
+                  </div>
+                  <div className="ProfilName">
+                      <div className='ProfilName-Teil'>
+                      <h2>Username: </h2> <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{user.username}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Vorname: </h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{user.vorname}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Nachname: </h2><p>&nbsp;&nbsp;&nbsp;&nbsp;{user.nachname}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Geschlecht: </h2><p>&nbsp;&nbsp;&nbsp;{user.geschlecht}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Studiengang: </h2><p>&nbsp;{user.studiengang}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Geburtstag: </h2><p>&nbsp;&nbsp;&nbsp;{formatDate(user.geburtstag)}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Email: </h2><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{user.email}</p>
+                      </div>
+                      <div className='ProfilName-Teil'>
+                      <h2>Semester: </h2><p>&nbsp;&nbsp;&nbsp;{user.semester}</p>
+                      </div>
+                  </div>
+            </div>
+            <div className='ProfilButton'>
+              <div className='ButtonRow'>
+              <button>
+                Daten ändern
+              </button>
+              <button>
+              Änderungen speichern
+              </button>
+              </div>
+              <div className='ButtonRow'>
+              <button>
+                Passwort ändern
+              </button>
+              <button>
+                Konto löschen
+              </button>
+              </div>
+            </div>
+            </div>
+            </div>
+          </div>
+            
+    
   );
 };
 
