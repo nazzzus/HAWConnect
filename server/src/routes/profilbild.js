@@ -16,19 +16,19 @@ const createProfileImages = async () => {
   
       const profileImage2 = new ProfilbildModel({
         imageName: 'Profilbild 2',
-        imagePath: '/pics/pirat.png', // Passe den Pfad entsprechend an
+        imagePath: '/pics/pirat.png', 
       });
       await profileImage2.save();
   
       const profileImage3 = new ProfilbildModel({
         imageName: 'Profilbild 1',
-        imagePath: '/pics/rainbow.png', // Passe den Pfad entsprechend an
+        imagePath: '/pics/rainbow.png', 
       });
       await profileImage3.save();
   
       const profileImage4 = new ProfilbildModel({
         imageName: 'Profilbild 2',
-        imagePath: '/pics/steinzeit.png', // Passe den Pfad entsprechend an
+        imagePath: '/pics/steinzeit.png', 
       });
       await profileImage4.save();
   

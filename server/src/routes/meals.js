@@ -48,5 +48,26 @@ router.get('/menus/weekly', async (req, res) => {
   });
   
 
+  router.get('/get-meals', async(req, res) => {
+    try{
+        const response = await MealsModel.find({});
+        res.json(response);
+    }catch(err){
+        res.json(err);
+    }
+})
+
+router.get('/get-meals/:menuValue', async (req, res) => {
+  try {
+    const menuValue = req.params.menuValue;
+
+    const meals = await MealsModel.find({ menu: menuValue });
+
+    res.json(meals);
+  } catch (err) {
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 export {router as mealsRouter};
 
