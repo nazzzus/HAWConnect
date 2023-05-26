@@ -35,6 +35,7 @@ function Navbar() {
             }).then(() => {
                 navigate('/Auth');
           })
+          localStorage.clear();
      
     }
 

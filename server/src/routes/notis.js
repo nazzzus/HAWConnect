@@ -10,10 +10,11 @@ const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-router.get('/birthday/:userId', verifyToken, async (req, res) => {
-    const userId = req.params.userId; // Annahme: Der aktuelle eingeloggte Benutzer ist im Token gespeichert und kann über req.user.id abgerufen werden
-  
+
+//wird benutzt für geburtstagsglückwunsch
+router.get('/birthday/:userId', async (req, res) => {
     try {
+      const userId = req.params.userId; // Annahme: Der aktuelle eingeloggte Benutzer ist im Token gespeichert und kann über req.user.id abgerufen werden
       const user = await UserModel.findById(userId);
   
       if (!user) {
@@ -34,6 +35,7 @@ router.get('/birthday/:userId', verifyToken, async (req, res) => {
     }
   });
 
+  // wird benutzt für Profil
   router.get('/user/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
@@ -51,8 +53,6 @@ router.get('/birthday/:userId', verifyToken, async (req, res) => {
       res.status(500).json({ message: 'Serverfehler' });
     }
   });
-
-
 
   
   

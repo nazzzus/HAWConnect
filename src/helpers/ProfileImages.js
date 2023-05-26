@@ -1,37 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
+import axios from "axios";
+import { useGetUserId } from "../hooks/useGetUserId";
+import { useNavigate } from "react-router-dom";
 
 const ProfileImages = () => {
-  const [profileImages, setProfileImages] = useState([]);
+  const userId = useGetUserId();
+  const [message, setMessage] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    // Rufe die API-Route auf, um die Profilbilder abzurufen
-    fetch('/pfp/profile-images')
-      .then(response => response.json())
-      .then(data => setProfileImages(data))
-      .catch(error => console.error(error));
-  }, []);
+  const handleImageChange = (event) => {
+    setSelectedImage(event.target.files[0]);
+  };
 
-  const handleSelectImage = (imageId) => {
-    const userId = '123'; // Hier müsstest du die Benutzer-ID entsprechend setzen
-
-    // Rufe die API-Route auf, um das ausgewählte Profilbild für den Benutzer zu speichern
-    fetch(`/pfp/users/${userId}/select-profile-image/${imageId}`, { method: 'POST' })
-      .then(response => response.json())
-      .then(data => console.log(data))
-      .catch(error => console.error(error));
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append('profileImage', selectedImage);
+      const response = await axios.post(`http://localhost:3001/pfp/add/${userId}`, formData);
+      setMessage(response.data.message);
+      navigate("/profil");
+      window.location.reload();
+    } catch (error) {
+      setMessage(error.response.data.message);
+    }
   };
 
   return (
-    <div>
-      <h2>Profilbilder</h2>
-      <ul>
-        {profileImages.map(image => (
-          <li key={image._id}>
-            <img src={image.imagePath} alt={image.imageName} />
-            <button onClick={() => handleSelectImage(image._id)}>Auswählen</button>
-          </li>
-        ))}
-      </ul>
+    <div className="pfp-form">
+      <form onSubmit={handleSubmit}>
+        <label>
+          Profile Image:
+          <input type="file" accept="image/*" onChange={handleImageChange} />
+        </label>
+        <button type="submit">Update Profile Image</button>
+      </form>
+      {message && <p>{message}</p>}
     </div>
   );
 };

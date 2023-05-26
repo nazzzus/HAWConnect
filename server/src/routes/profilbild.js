@@ -1,68 +1,67 @@
-import { verifyToken } from "./users.js";
-import { ProfilbildModel } from "../models/Profilbild.js";
-import express from 'express';
 import { UserModel } from "../models/Users.js";
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+
 
 const router = express.Router();
 
+// Multer-Konfiguration für den Datei-Upload
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const uploadPath = path.join(process.cwd(), 'uploads');
+    fs.mkdirSync(uploadPath, { recursive: true });
+    cb(null, uploadPath);
+  },
+  filename: (req, file, cb) => {
+    const fileName = `${Date.now()}-${file.originalname}`;
+    cb(null, fileName);
+  },
+});
+const upload = multer({ storage });
 
-const createProfileImages = async () => {
-    try {
-      const profileImage1 = new ProfilbildModel({
-        imageName: 'Profilbild 1',
-        imagePath: '/pics/hawaii.png', // Passe den Pfad entsprechend an
-      });
-      await profileImage1.save();
-  
-      const profileImage2 = new ProfilbildModel({
-        imageName: 'Profilbild 2',
-        imagePath: '/pics/pirat.png', 
-      });
-      await profileImage2.save();
-  
-      const profileImage3 = new ProfilbildModel({
-        imageName: 'Profilbild 1',
-        imagePath: '/pics/rainbow.png', 
-      });
-      await profileImage3.save();
-  
-      const profileImage4 = new ProfilbildModel({
-        imageName: 'Profilbild 2',
-        imagePath: '/pics/steinzeit.png', 
-      });
-      await profileImage4.save();
-  
-      console.log('Profilbilder wurden erfolgreich erstellt und gespeichert');
-    } catch (error) {
-      console.error('Fehler beim Erstellen und Speichern der Profilbilder:', error);
+router.post('/add/:userId', upload.single('profileImage'), async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await UserModel.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-  };
 
-createProfileImages();
+    const imagePath = req.file.path;
 
-router.get('/profile-images', async (req, res) => {
-    try {
-      const profileImages = await ProfilbildModel.find();
-      res.json(profileImages);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal server error' });
+    // Speichern des Bildpfads in der Datenbank
+    user.profilbild = imagePath;
+    await user.save();
+
+    res.status(201).json({
+      createdPfp: {
+        profilbild: user.profilbild,
+      },
+      message: 'Selected profile image updated successfully',
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error updating selected profile image' });
+  }
+});
+
+router.get('/image/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await UserModel.findById(userId);
+
+    if (!user || !user.profilbild) {
+      return res.status(404).json({ message: 'Profile image not found' });
     }
-  });
 
-  router.post('/users/:userId/select-profile-image/:imageId', async (req, res) => {
-    const { userId, imageId } = req.params;
-  
-    try {
-      const user = await UserModel.findById(userId);
-      user.savedProfileImage = imageId;
-      await user.save();
-  
-      res.json({ message: 'Selected profile image updated successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error updating selected profile image' });
-    }
-  });
+    res.sendFile(user.profilbild);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error retrieving profile image' });
+  }
+});
 
-  export { router as profilbildRouter };
+export { router as profilbildRouter };

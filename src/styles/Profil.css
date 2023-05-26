@@ -6,6 +6,8 @@
 
 .ProfilTitle{
     margin-bottom: 1em;
+    justify-content: center;
+    align-items: center;
 }
 .Profil .ProfilInfo {
     position:relative;
@@ -52,12 +54,21 @@
     height: auto;
     border-style: groove;
     border-radius: 2em;
+    margin-bottom: 5em;
 }
 
 .ProfilInfo h1{
     text-align: center;
 }
 
+.ProfilTitle img{
+    width: 5em;
+    height: 6em;
+    align-self: center;
+    align-items: center;
+    align-content: center;
+    margin-left: 15em;
+}
 
 .ProfilInfo p{
     font-size: 1.5em;

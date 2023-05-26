@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useGetUserId } from '../hooks/useGetUserId';
 import '../styles/Profil.css'
+import ProfileImages from '../helpers/ProfileImages';
+import Pfp from '../helpers/Pfp';
 
 const Profil = () => {
   const [user, setUser] = useState(null);
@@ -47,6 +49,7 @@ const Profil = () => {
                 <div className='ProfilInfo'>
                   <div className='ProfilTitle'>
                     <h1>User Profile</h1>
+                    <Pfp/>
                   </div>
                   <div className="ProfilName">
                       <div className='ProfilName-Teil'>
@@ -92,6 +95,7 @@ const Profil = () => {
                 Konto löschen
               </button>
               </div>
+              <ProfileImages/>
             </div>
             </div>
             </div>

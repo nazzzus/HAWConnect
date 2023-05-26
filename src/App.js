@@ -17,7 +17,7 @@ import Impressum from './pages/Impressum';
 //helpers
 import BibList from './helpers/BibList';
 import Kalender from './components/Kalender';
-import Stundenplan from './helpers/Stundenplan';
+import Stundenplan from './pages/Stundenplan';
 import {BrowserRouter as Router, Route, Routes as Switch} from 'react-router-dom';
 import React, {useEffect, useState } from 'react';
 import News from './components/Newsanzeige';
