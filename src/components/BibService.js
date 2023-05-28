@@ -110,7 +110,8 @@ function BibService() {
 
   return (
     <div className='bibService'>
-      <div className='bibServiceTable'>
+      <div className="bibService-top">
+        <h1>Bücher-Service</h1>
         <form onSubmit={handleSubmit}>
           <label htmlFor='buchtitel'>Buchtitel</label>
           <input
@@ -151,7 +152,8 @@ function BibService() {
 
           <button type='submit'>Buch hinzufügen</button>
         </form>
-
+      </div>
+      <div className='bibServiceTable'>
         <table className='book-table'>
           <thead>
             <tr>

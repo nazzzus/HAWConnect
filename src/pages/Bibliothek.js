@@ -29,9 +29,6 @@ function Bibliothek() {
                 <iframe id='Bsuche' src={"https://katalog.haw-hamburg.de/vufind/"}></iframe>
                 </div>
                 <div className='BibContentBuchAusleihen'>
-                    <h1>
-                        Bücher-Service
-                    </h1>
                     <Viewbook/>
                     <BibService/>
                 </div>

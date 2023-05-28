@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import {SemesterList } from '../helpers/SemesterList'
 import SemItem from '../components/SemesterItem'
 import '../styles/Kurse.css'
-import BannerImage from '../assets/semBanner.png'
+import BannerImage from '../assets/semesterBanner.png'
 
 
 
@@ -11,7 +11,8 @@ function Kurse() {
   return (
     <div className='KurseMain'>
       <div className='KurseTitle' style={{ backgroundImage: `url(${BannerImage})` }}>
-      <h1>Dein Planer für deine Semester und Kurse</h1>
+      <h1>Dein Planer für deine </h1>
+      <h1>Semester und Kurse</h1>
       <h2>Nutze den Planer, um dir dein Studium gut zu organisieren.</h2>
         </div>
       <div className='semesterList'>

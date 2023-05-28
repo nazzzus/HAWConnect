@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import useCookies from 'react-cookie/cjs/useCookies'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
+import logo from '../assets/logo.png';
 
 function Navbar() {
 
@@ -50,7 +50,7 @@ function Navbar() {
   return (
     <div className='navbar'>
        <div className='leftSide'>
-                <Header/>
+            <img src={logo} alt='Logo' />
         </div>
 
         <div className='midSide'>

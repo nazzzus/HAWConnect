@@ -12,7 +12,7 @@ function Planer() {
     <div className='planerMain'>
       <div className='planerTitle' style={{ backgroundImage: `url(${BannerImage})` }}>
       <h1>Dein Planer</h1>
-      <h2>Nutze den Planer, um dir dein Studium gut zu organisieren.</h2>
+      <h2>Nutze den Planer, um dir dein Studium gut zu organisieren</h2>
         </div>
       <div className='planerList'>
         {

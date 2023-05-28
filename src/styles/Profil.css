@@ -4,6 +4,15 @@
     display: flex;
 }
 
+.Profil{
+    height: 100%;
+    background-image: url('../assets/haw.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size:cover;
+    position: relative;
+}
+
 .ProfilTitle{
     margin-bottom: 1em;
     justify-content: center;
@@ -50,7 +59,7 @@
     width: 35em;
     max-width: 35em;
     padding: 0.5em;
-    background-color: rgb(128, 180, 204);
+    background-color: #0c2c48;
     height: auto;
     border-style: groove;
     border-radius: 2em;
@@ -59,6 +68,7 @@
 
 .ProfilInfo h1{
     text-align: center;
+    color: #fff;
 }
 
 .ProfilTitle img{
@@ -72,6 +82,7 @@
 
 .ProfilInfo p{
     font-size: 1.5em;
+    color: #fff;
 }
 
 .ProfilName-Teil{
@@ -81,10 +92,25 @@
 
 .ProfilName-Teil p{
     justify-content: center;
+    color: #fff;
     display: block;
     text-align: center;
     margin-block-start: 0.83em;
     margin-block-end: 0.83em;
     margin-inline-start: 0px;
     margin-inline-end: 0px;
+}
+
+.ProfilInfo h2{
+    color: #fff;
+}
+
+.ProfilInfo input{
+    color:#0c2c48;
+    margin-left: 10.5em;
+}
+
+.pfp-button Button{
+    margin-left: 0em;
+    margin-top: 1em;
 }

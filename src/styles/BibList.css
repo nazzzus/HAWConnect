@@ -12,9 +12,10 @@
 }
 
 .BibItemText{
-    background-color: gray;
+    background-color: #0c2c48;
     height: 500px;
     width: 300px;
+    color: #fff;
 }
 
 .BibItemSingle .BibItemText .p{
@@ -25,6 +26,7 @@
     margin-inline-start: 0px;
     margin-inline-end: 0px;
     font-weight: bold;
+    color: #fff;
 }
 
 .BibItemSingle iframe{

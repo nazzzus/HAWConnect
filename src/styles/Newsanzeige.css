@@ -5,7 +5,7 @@
     margin-top: 0.5em;
     margin-left: 1em;
     margin-right: 1em;
-    background-color: rgba(50, 31, 212, 0.356);
+    background-color: rgb(12,44,72);
     border-radius: 16px;
     padding: 1px 1px;
     color: #FFF;
@@ -17,7 +17,7 @@
 }
 
 .newsboard-main h1{
-    font-size: 0.5em;
+    font-size: 1em;
 } 
 
 .newsboard-main-items {
@@ -38,12 +38,20 @@
     margin-left: 0%;
     margin-right: 0%;
     margin-top: 0em;
+    border-collapse: collapse;
+    margin-left: 0.5em;
+    margin-bottom: 1em;
+    margin-right: 0.5em;
+    margin-top: 1em;
 }
 
 .newsboard-table td{
     width: auto;
     height: auto;
-    background-color: rgba(50, 31, 212, 0.356);
     text-align: center;
     color: white;
+}
+
+.newsboard-table td, th{
+    border: 1px solid #7199ad;
 }

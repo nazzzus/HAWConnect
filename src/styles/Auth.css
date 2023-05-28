@@ -6,10 +6,24 @@
     width: 35em;
     max-width: 35em;
     padding: 0.5em;
-    background-color: rgb(128, 180, 204);
+    background-color: #0c2c48;
     height: auto;
     border-style: groove;
     border-radius: 2em;
+    margin-bottom: 5em;
+  }
+
+  .auth h1{
+    color: #fff;
+    margin-bottom: 0.5em;
+  }
+
+  .auth h4{
+    color: #fff;
+  }
+
+  label{
+    color: #fff;
   }
 
 .top-auth{

@@ -5,6 +5,7 @@ import { useGetUserId } from '../hooks/useGetUserId';
 import '../styles/Profil.css'
 import ProfileImages from '../helpers/ProfileImages';
 import Pfp from '../helpers/Pfp';
+import Swal from 'sweetalert2';
 
 const Profil = () => {
   const [user, setUser] = useState(null);
@@ -21,7 +22,7 @@ const Profil = () => {
       try {
         const response = await axios.get(`http://localhost:3001/notis/user/${userId}`, {
           headers: {
-            Authorization: `Bearer ${cookies.access_token}` // Setzen Sie den access_token im Header
+            Authorization: `Bearer ${cookies.access_token}`
           }
         });
 
@@ -35,12 +36,46 @@ const Profil = () => {
   }, [userId, cookies.access_token]);
 
   const handleProfilePictureUpload = () => {
-    // Handle logic for profile picture upload here
+    
   };
 
   if (!user) {
     return <div>Loading...</div>;
   }
+
+
+    const deleteAccount = async() => {
+      const response = await axios.get(`http://localhost:3001/auth/delete/${userId}`, {
+          headers: {
+            Authorization: `Bearer ${cookies.access_token}`
+          }});
+          setUser(response.data.user);
+      try {
+        Swal.fire({ 
+          title: 'Bist du dir sicher?',
+          text: "Du kannst das nicht rückgängig machen!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          cancelButtonText: 'Abbrechen',
+          confirmButtonText: 'Ja, Account permanent löschen!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire(
+              'Gelöscht!',
+              'Dein Account wurde gelöscht',
+              'success'
+            )
+          }
+        })
+      } catch (error) {
+        
+      }
+    }
+  
+  
+  
 
   return (
           <div className='Profil'>
@@ -91,7 +126,7 @@ const Profil = () => {
               <button>
                 Passwort ändern
               </button>
-              <button>
+              <button onClick={deleteAccount}>
                 Konto löschen
               </button>
               </div>

@@ -20,14 +20,13 @@ function Newsanzeige() {
 
   return (
     <div className="newsboard-main">
-      <h1>newsboard</h1>
+      <h1>Newsboard</h1>
       <div className="newsboard-main-items">
       <table className="newsboard-table">
         <thead>
         <tr>
           <th>Titel</th>
           <th>Autor</th>
-          <th>Datum</th> 
           <th>Veröffentlicht am</th>
         </tr>
         </thead>
@@ -36,7 +35,6 @@ function Newsanzeige() {
           <tr key={n._id}>
             <td>{n.titel}</td>
             <td>{n.autor}</td>
-            <td>{formatDate(n.datum)}</td>
             <td>{formatDate(n.erstelltAm)}</td>
           </tr>
         ))}

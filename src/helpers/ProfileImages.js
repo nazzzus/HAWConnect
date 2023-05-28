@@ -30,11 +30,14 @@ const ProfileImages = () => {
   return (
     <div className="pfp-form">
       <form onSubmit={handleSubmit}>
-        <label>
-          Profile Image:
+       <div className="pfp-sinnlos"> 
+       <label>
           <input type="file" accept="image/*" onChange={handleImageChange} />
         </label>
-        <button type="submit">Update Profile Image</button>
+        </div>
+        <div className="pfp-button">
+          <button type="submit">Profilbild hochladen</button>
+        </div>
       </form>
       {message && <p>{message}</p>}
     </div>

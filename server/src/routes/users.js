@@ -71,6 +71,33 @@ router.post("/login", async (req, res) => {
   res.json({token, userID: user._id});
 });
 
+// Handler für das Bearbeiten eines Datenobjekts
+router.put("/edit/:id", (req, res) => {
+  const id = req.params.id;
+  const updatedData = req.body;
+
+  DataModel.findByIdAndUpdate(id, updatedData)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.error("Fehler beim Bearbeiten der Daten:", error);
+      res.sendStatus(500);
+    });
+});
+
+// Handler für das Löschen eines Datenobjekts
+router.delete("/delete/:id", (req, res) => {
+  const id = req.params.id;
+  DataModel.findByIdAndDelete(id)
+    .then(() => {
+      res.sendStatus(200);
+    })
+    .catch(error => {
+      console.error("Fehler beim Löschen der Daten:", error);
+      res.sendStatus(500);
+    });
+});
 
 export {router as userRouter};
 
