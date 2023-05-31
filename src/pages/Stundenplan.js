@@ -172,7 +172,7 @@ const Kalender = () => {
           dateClick={handleDateClick}
           initialView={'timeGridWeek'}
           slotMinTime="08:00:00" // Die früheste Uhrzeit, die angezeigt werden soll
-          slotMaxTime="20:00:00" // Die späteste Uhrzeit, die angezeigt werden soll
+          slotMaxTime="22:00:00" // Die späteste Uhrzeit, die angezeigt werden soll
           slotDuration="00:30:00" // Die Dauer eines Zeitslots
           slotLabelInterval="01:00" // Intervall für die Anzeige der Uhrzeitlabels
           slotLabelFormat={{

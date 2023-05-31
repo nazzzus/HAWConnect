@@ -38,23 +38,30 @@ import Pruefungsplan from './pages/Pruefungsplan'
 import KeineSeite from './pages/KeineSeite';
 import Schedule from './helpers/Schedule';
 import ProfileImages from './helpers/ProfileImages';
-
-
+import Admin from './pages/Admin';
+import { UserProvider } from './components/UserContext';
+import PrivateRoute from './components/PrivateRoute';
 
 
 
 function App() {
   return (
     <div className="App">
+       <UserProvider>
       <Router>
         <Navbar />
         <Switch>
-          <Route path='/' exact element={<Home/>} />
           <Route path='/Planer' exact element={<Planer/>} />
-          <Route path='/Bibliothek' exact element={<Bibliothek/>} />
+          <Route path='/Bibliothek' exact element={
+           <PrivateRoute roles={['admin', 'student']}>
+            <Bibliothek/>
+            </PrivateRoute> } />
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
-          <Route path='/Auth' exact element={<Auth/>} />
+          <Route path="/" element={
+              <Home />
+          } />
+          <Route path="/Auth" element={<Auth />} />
           <Route path='/Zitat' exact element={<Zitat/>} />
           <Route path='/Create' exact element={<Create/>} />
           <Route path='/Saved' exact element={<Saved/>} />
@@ -74,11 +81,16 @@ function App() {
           <Route path='/Viewbook' exact element={<Viewbook/>} />
           <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
           <Route path='/Schedule' exact element={<Schedule/>} />
-          <Route path='ProfileImages' exact element={<ProfileImages/>} />
           <Route path='*' exact element={<KeineSeite/>} />
+          <Route path="/admin" element={
+            <PrivateRoute roles={['admin']}>
+              <Admin />
+            </PrivateRoute>
+          } />
         </Switch>
         <Footer />
       </Router>
+      </UserProvider>
     </div>
   );
 }

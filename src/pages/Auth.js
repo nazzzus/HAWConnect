@@ -28,7 +28,11 @@ function Auth() {
             {isLoginFormVisible ? 'Du musst dich noch registrieren?' : 'Login'}
           </button>
           <br />
-          <button onClick={handleForgotPassword}>Passwort vergessen</button>
+          {isLoginFormVisible ? (
+            <button onClick={handleForgotPassword}>Passwort vergessen</button>
+          ) : (
+            null
+          )}
         </div>
       </div>
     </div>

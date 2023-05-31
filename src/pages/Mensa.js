@@ -78,10 +78,11 @@ function Mensa() {
                     <div className="meal-info1">
                       {mealsOnDay.map((meal, index) => (
                         <div className="meal1" key={index}>
-                          <p>Gericht: {meal.name}</p>
-                          <p>Preis: {meal.price}</p>
+                          <h3>Gericht: </h3>
+                          <h4>{meal.name}</h4>
+                          <h5>Preis: </h5>
+                          <h5>{meal.price} €</h5>
                           <p>Zutaten: {meal.ingredients}</p>
-                          <p>Datum: {formattedDate(meal.datum)}</p>
                         </div>
                       ))}
                     </div>
