@@ -35,6 +35,11 @@
   margin: 0;
 }
 
+.meal1 img{
+  height: 2em;
+  width: 2em;
+}
+
 .meal1 h5{
   text-align: left;
   margin: 0;
@@ -42,7 +47,8 @@
 
 
 .main-content1 .main-content-row-item1{
-    background-color: rgba(38, 116, 77, 0.356);
+    background-color:#0c2c48;
+    ;
     border-radius: 16px;
     color: #FFF;
     font-size: 1em;
