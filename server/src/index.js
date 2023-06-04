@@ -16,6 +16,7 @@ import { eventsRouter } from './routes/event.js';
 import { notisRouter } from './routes/notis.js';
 import { profilbildRouter } from './routes/profilbild.js';
 import { icsRouter } from './routes/ics.js';
+import { semRouter } from './routes/semester.js';
 
 const app = express()
 
@@ -35,6 +36,7 @@ app.use('/events', eventsRouter);
 app.use('/notis', notisRouter);
 app.use('/pfp', profilbildRouter)
 app.use('/ics', icsRouter);
+app.use('/sem', semRouter)
 
 mongoose.connect(
     "mongodb+srv://nazzzus:Genshin2023@hawcon.bncl3gu.mongodb.net/hawcon?retryWrites=true&w=majority"
