@@ -160,8 +160,14 @@ const Kalender = () => {
 
   return (
     <section>
+      <div className='sem-banner'>
+        <h1>Stundenplan</h1>
+        <h2>Für das aktuelle Semester</h2>
+      </div>
+      <div className='splan-buttons'>
       <button onClick={() => setModalOpen(true)}>Füge einen Termin hinzu</button>
       <Ics/>
+      </div>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale="de"

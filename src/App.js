@@ -41,7 +41,7 @@ import ProfileImages from './helpers/ProfileImages';
 import Admin from './pages/Admin';
 import { UserProvider } from './components/UserContext';
 import PrivateRoute from './components/PrivateRoute';
-
+import Vorlesungsplan from './helpers/Vorlesungsplan';
 
 
 function App() {
@@ -53,14 +53,11 @@ function App() {
         <Switch>
           <Route path='/Planer' exact element={<Planer/>} />
           <Route path='/Bibliothek' exact element={
-           <PrivateRoute roles={['admin', 'student']}>
-            <Bibliothek/>
-            </PrivateRoute> } />
+            <Bibliothek/>} />
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
-          <Route path="/" element={
-              <Home />
-          } />
+          <Route path="/" element={ <Home/>} />
+          <Route path='/Vorlesungsplan' element={<Vorlesungsplan/>} />
           <Route path="/Auth" element={<Auth />} />
           <Route path='/Zitat' exact element={<Zitat/>} />
           <Route path='/Create' exact element={<Create/>} />

@@ -159,6 +159,10 @@ const Kalender = () => {
 
   return (
     <section>
+      <div className='sem-banner'>
+        <h1>Kalender</h1>
+        <h2>Für deine Organisation im aktuellen Semester</h2>
+      </div>
       <button onClick={() => setModalOpen(true)}>Füge einen Termin hinzu</button>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar

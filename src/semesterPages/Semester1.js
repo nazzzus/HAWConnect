@@ -29,6 +29,11 @@ function Semester1() {
 
   return (
     <div className="sem">
+      <div className='sem-main'>
+    <div className='sem-banner'>
+      <h1>Semester 1</h1>
+      <h2>Deine Kurse aus dem ersten Semester</h2>
+    </div>
       <table>
         <thead>
           <tr>
@@ -51,6 +56,7 @@ function Semester1() {
           ))}
         </tbody>
       </table>
+    </div>
     </div>
   );
 }

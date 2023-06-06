@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../styles/Mensa.css';
+import BannerImage from '../assets/mensaBanner.png'
 import axios from 'axios';
 
 function Mensa() {
@@ -40,7 +41,7 @@ function Mensa() {
     return groupedMeals;
   };
 
-  const weekdays = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+  const weekdays = ['Sonntag', ' M O N T A G ', ' D I E N S T A G ', ' M I T T W O C H ', ' D O N N E R S T A G ', ' F R E I T A G ', 'Samstag'];
 
   const formattedDate = (dateString) => {
     const date = new Date(dateString);
@@ -72,54 +73,59 @@ function Mensa() {
 
   return (
     <div className="main-plan1">
+      <div className='main-plan-banner' style={{ backgroundImage: `url(${BannerImage})` }}>
       <h1>Mensaplan</h1>
       <h2>Für die aktuelle Woche</h2>
+      </div>
       <div className="main-content1">
         {Object.entries(mealGroups).map(([weekday, categoryMeals]) => (
-          <div className="main-content-row1" key={weekday}>
-            <div className="main-content-row-item1">
-              <p>{weekdays[weekday]}</p>
+          <div key={weekday}>
+            <div className="item-wochentag">
+              <h1>{weekdays[weekday]}</h1>
             </div>
-            {Object.entries(categoryMeals).map(([category, mealsOnDay]) => (
-              <div className="main-content-row-item1" key={category}>
-                <div className="item-info1">
-                  <strong>
-                    <p>
-                      {mealsOnDay.length > 0 ? (
-                        `${category}`
-                      ) : (
-                        'Keine Gerichte an diesem Tag'
-                      )}
-                    </p>
-                  </strong>
-                  {mealsOnDay.length > 0 ? (
-                    <div className="meal-info1">
-                      {mealsOnDay.map((meal, index) => (
-                        <div className="meal1" key={index}>
-                          <h3>Gericht: </h3>
-                          <h4>{meal.name}</h4>
-                          <h5>Preis: </h5>
-                          <h5>{meal.price} €</h5>
-                          <p>Zutaten:</p>
-                          <img src={getImagePath(meal.ingredients)} alt={meal.ingredients} />
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>
-                      <br />
-                      <br />
-                      Keine Gerichte an diesem Tag!
-                    </p>
-                  )}
+            <div className="main-content-row1">
+              {Object.entries(categoryMeals).map(([category, mealsOnDay]) => (
+                <div className="main-content-row-item1" key={category}>
+                  <div className="item-info1">
+                    <strong>
+                      <p>
+                        {mealsOnDay.length > 0 ? (
+                          `${category}`
+                        ) : (
+                          'Keine Gerichte an diesem Tag'
+                        )}
+                      </p>
+                    </strong>
+                    {mealsOnDay.length > 0 ? (
+                      <div className="meal-info1">
+                        {mealsOnDay.map((meal, index) => (
+                          <div className="meal1" key={index}>
+                            <h3>Gericht: </h3>
+                            <h4>{meal.name}</h4>
+                            <h3>Preis: </h3>
+                            <h5>{meal.price} €</h5>
+                            <img src={getImagePath(meal.ingredients)} alt={meal.ingredients} />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>
+                        <br />
+                        <br />
+                        Keine Gerichte an diesem Tag!
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
+  
+  
 }
 
 export default Mensa;

@@ -19,19 +19,7 @@ export const PlanerList = [
         path: "/Stundenplan",
     },
     {
-        name: "Vorlesungsplan",
-        image: Vplan,
-        text: "Trage deine Vorlesungen ein, damit du alle deine Module im Überblick hast.",
-        path: "/Vorlesungsplan",
-    },
-    {
-        name: "Uebungsplan",
-        image: Üplan,
-        text: "Trage deine Übungen und Praktika ein, damit du alle deine Abgaben im Überblick hast.",
-        path: "/Uebungsplan",
-    },
-    {
-        name: "Pruefungsplan",
+        name: "Prüfungsplan",
         image: Pplan,
         text: "Trage deine Prüfungstermine ein, damit du alle deine Prüfungen im Überblick hast.",
         path: "/Pruefungsplan",

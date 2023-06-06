@@ -16,12 +16,18 @@ const data = [
 
 function Kurse() {
   return (
+    <div className='sem-main'>
+    <div className='sem-banner'>
+      <h1>Semester 6</h1>
+      <h2>Deine Kurse aus dem sechsten Semester</h2>
+    </div>
     <table>
       <thead>
         <tr>
-          <th>Module</th>
+        <th>Module</th>
           <th>Belegt</th>
           <th>Bestanden</th>
+          <th>Note</th>
           <th>Informationen</th>
         </tr>
       </thead>
@@ -31,6 +37,7 @@ function Kurse() {
         ))}
       </tbody>
     </table>
+    </div>
   );
 }
 
