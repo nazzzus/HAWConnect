@@ -80,9 +80,9 @@ function App() {
           <Route path='/Schedule' exact element={<Schedule/>} />
           <Route path='*' exact element={<KeineSeite/>} />
           <Route path="/admin" element={
-            <PrivateRoute roles={['admin']}>
+
               <Admin />
-            </PrivateRoute>
+
           } />
         </Switch>
         <Footer />
