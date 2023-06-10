@@ -57,6 +57,8 @@ function Admin() {
         icon: 'success',
         title: 'Der News-Eintrag wurde hinzugefügt!'
       }).then(() => {
+        navigate("/admin");
+        window.location.reload();
       
   })
     } catch (err) {
@@ -102,6 +104,8 @@ function Admin() {
           if (response.status === 200) {
             // Erfolgreich gelöscht, kannst hier z.B. eine Aktualisierung der News-Liste durchführen
             console.log('News-Eintrag erfolgreich gelöscht');
+            navigate("/admin");
+            window.location.reload();
           } else {
             console.log('Fehler beim Löschen des News-Eintrags');
           }
@@ -140,6 +144,8 @@ function Admin() {
           titel: "",
           autor: "",
         });
+        navigate("/admin");
+        window.location.reload();
       } else {
         console.log('Fehler beim Aktualisieren des News-Eintrags');
       }
@@ -191,6 +197,7 @@ function Admin() {
               onChange={handleChange}
               required
               />
+              <label htmlFor='autor'>Autor</label>
               <input
               type='text'
               id='autor'
@@ -210,7 +217,7 @@ function Admin() {
                 Newstitel
               </th>
               <th>
-                Author
+                Autor
               </th>
               <th>
                 Veröffentlicht am
