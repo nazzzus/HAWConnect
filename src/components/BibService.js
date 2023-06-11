@@ -6,11 +6,18 @@ import '../styles/Createbook.css';
 import { useGetUserId } from "../hooks/useGetUserId";
 import Swal from 'sweetalert2';
 
-
 function BibService() {
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [editBookId, setEditBookId] = useState("");
+  const [editBook, setEditBook] = useState({
+    buchtitel: "",
+    buchautor: "",
+    ausleihdatum: "",
+    rueckgabedatum: "",
+    status: "",
+    userOwner: userId,
+  });
 
   const [book, setBook] = useState({
     buchtitel: "",
@@ -100,7 +107,40 @@ function BibService() {
   };
 
   const handleEdit = (bookId) => {
-    navigate(`http://localhost:3001/book/${bookId}/bearbeiten`);
+    
+    const bookToEdit = bookList.find((book) => book._id === bookId);
+    if (bookToEdit) {
+      setEditBookId(bookId);
+      setEditBook({
+        buchtitel: bookToEdit.buchtitel,
+        buchautor: bookToEdit.buchautor,
+        ausleihdatum: bookToEdit.ausleihdatum,
+        rueckgabedatum: bookToEdit.rueckgabedatum,
+      });
+    }
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axios.put(`http://localhost:3001/book/${editBookId}`, editBook);
+
+      if (response.status === 200) {
+        console.log('Buch-Eintrag erfolgreich aktualisiert');
+        setEditBookId(null);
+        setEditBook({
+          buchtitel: "",
+          buchautor: "",
+          ausleihdatum: "",
+          rueckgabedatum: "",
+        });
+        navigate("/bibliothek");
+        window.location.reload();
+      } else {
+        console.log('Fehler beim Aktualisieren des Buch-Eintrags');
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const formatDate = (dateString) => {
@@ -168,19 +208,67 @@ function BibService() {
           <tbody>
             {bookList.map((book) => (
               <tr key={book._id}>
-                <td>{book.buchtitel}</td>
-                <td>{book.buchautor}</td>
-                <td>{formatDate(book.ausleihdatum)}</td>
-                <td>{formatDate(book.rueckgabedatum)}</td>
+                <td>
+                  {editBookId===book._id ? (
+                    <input 
+                    type = 'text' 
+                    name = 'buchtitel'
+                    value = {editBook.buchtitel}
+                    onChange={(event) => setEditBook({...editBook, buchtitel: event.target.value })}
+                    />
+                  ) : (
+                    book.buchtitel
+                  )}
+                  </td>
+                  <td>
+                  {editBookId===book._id ? (
+                    <input 
+                    type = 'text' 
+                    name = 'buchautor'
+                    value = {editBook.buchautor}
+                    onChange={(event) => setEditBook({...editBook, buchautor: event.target.value })}
+                    />
+                  ) : (
+                    book.buchautor
+                  )}
+                  </td>
+                  <td>
+                  {editBookId===book._id ? (
+                    <input 
+                    type = 'date' 
+                    name = 'ausleihdatum'
+                    value = {editBook.ausleihdatum}
+                    onChange={(event) => setEditBook({...editBook, ausleihdatum: event.target.value })}
+                    />
+                  ) : (
+                    formatDate(book.ausleihdatum)
+                  )}
+                  </td>
+                  <td>
+                  {editBookId===book._id ? (
+                    <input 
+                    type = 'date' 
+                    name = 'rueckgabedatum'
+                    value = {editBook.rueckgabedatum}
+                    onChange={(event) => setEditBook({...editBook, rueckgabedatum: event.target.value })}
+                    />
+                  ) : (
+                    formatDate(book.ausleihdatum)
+                  )}
+                  </td>
                 <td>
                   <button onClick={() => handleDelete(book._id)}>
                     Löschen
                   </button>
                 </td>
                 <td>
-                  <button onClick={() => setModalOpen(true)}>
-                    Bearbeiten
-                  </button>
+                  {editBookId === book._id ? (
+                    <button onClick={handleUpdate}>Speichern</button>
+                  ) : (
+                    <button onClick={() => handleEdit(book._id)}>
+                      Bearbeiten
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

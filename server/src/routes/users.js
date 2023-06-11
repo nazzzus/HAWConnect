@@ -99,6 +99,50 @@ router.delete("/delete/:id", (req, res) => {
     });
 });
 
+router.post('/reset-password', async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Überprüfen, ob der Benutzer existiert
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'Benutzer nicht gefunden' });
+    }
+
+    // Das Passwort des Benutzers zurücksetzen
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.json({ message: 'Passwort erfolgreich zurückgesetzt' });
+  } catch (error) {
+    console.error('Fehler beim Zurücksetzen des Passworts:', error);
+    res.status(500).json({ message: 'Interner Serverfehler' });
+  }
+});
+
+router.put("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { semester } = req.body;
+
+  try {
+    const updatedUser = await UserModel.findByIdAndUpdate(
+      id,
+      { semester },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "Benutzer nicht gefunden" });
+    }
+
+    res.json({ user: updatedUser });
+  } catch (error) {
+    console.error("Fehler beim Aktualisieren des Semesters:", error);
+    res.status(500).json({ message: "Interner Serverfehler" });
+  }
+});
+
 export {router as userRouter};
 
 export const verifyToken = (req, res, next) => {
@@ -115,3 +159,4 @@ export const verifyToken = (req, res, next) => {
 }
 
 };
+

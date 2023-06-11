@@ -51,6 +51,16 @@
     margin-bottom: 1em;
 }
 
+.ButtonRow-Sem Button{
+    width: 4em;
+}
+
+.ButtonRow-Sem{
+    display: flex;
+    flex-direction: column;
+    margin-left: 12em ;
+}
+
 .window-Profil{
     position: relative;
     top: 4%;
@@ -121,3 +131,4 @@
     height: 7em;
     width: 7em;
 }
+

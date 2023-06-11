@@ -106,7 +106,7 @@ function Mensa() {
                             <h5>{meal.price} €</h5>
                             <div className='image-container'>
                             <img src={getImagePath(meal.ingredients)} alt={meal.ingredients} />
-                            <div className='text-overlay'> {meal.ingredients}</div>
+                            <div className='text-overlay'> {meal.ingredients} </div>
                             </div>
                           </div>
                         ))}

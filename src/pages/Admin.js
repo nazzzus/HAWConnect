@@ -187,6 +187,9 @@ function Admin() {
       <div className='main-admin-body'>
         <div className="main-admin-body-news">
         <div className='main-admin-body-news-add'>
+          <div>
+            <h1>News</h1>
+          </div>
           <form onSubmit={handleSubmit}>
             <label htmlFor='newstitel'>Newstitel</label>
             <input
