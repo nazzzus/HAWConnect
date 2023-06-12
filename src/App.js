@@ -39,15 +39,28 @@ import KeineSeite from './pages/KeineSeite';
 import Schedule from './helpers/Schedule';
 import ProfileImages from './helpers/ProfileImages';
 import Admin from './pages/Admin';
-import { UserProvider } from './components/UserContext';
-import PrivateRoute from './components/PrivateRoute';
 import Vorlesungsplan from './helpers/Vorlesungsplan';
+import { useGetUserId } from './hooks/useGetUserId';
+
 
 
 function App() {
+  const userId = useGetUserId();
+
+  const checkAdminRole = () => {
+    const allowedAdminIds = ['64737cccd84b3dd3043587e0', '646e661262545dab523becb0', 'id3', 'id4', 'id5'];
+
+
+    if (allowedAdminIds.includes(userId)) {
+      return <Admin />;
+    } else {
+      return <Home />;
+    }
+  };
+
+
   return (
     <div className="App">
-       <UserProvider>
       <Router>
         <Navbar />
         <Switch>
@@ -79,15 +92,10 @@ function App() {
           <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
           <Route path='/Schedule' exact element={<Schedule/>} />
           <Route path='*' exact element={<KeineSeite/>} />
-          <Route path="/admin" element={
-
-              <Admin />
-
-          } />
+          <Route path="/admin" element={checkAdminRole()} />
         </Switch>
         <Footer />
       </Router>
-      </UserProvider>
     </div>
   );
 }

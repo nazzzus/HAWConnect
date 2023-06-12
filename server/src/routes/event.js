@@ -96,15 +96,23 @@ router.put("/:id/update", async (req, res) => {
     }
   });
   
-  router.delete("/:id/delete", async (req, res) => {
-    const id = req.params.id;
+  router.delete("/delete-event/:eventId", async (req, res) => {
+    const { eventId } = req.params;
+  
     try {
-      await Event.findByIdAndDelete(id);
-      res.status(200).json("Event has been deleted");
+      const event = await EventModel.findById(eventId);
+      if (!event) {
+        return res.status(404).json({ message: 'Event not found' });
+      }
+  
+      await EventModel.findByIdAndRemove(eventId);
+      res.status(200).json({ message: 'Event successfully deleted' });
     } catch (err) {
-      handleError(err, res);
+      res.status(500).json(err);
     }
   });
-
+  
+  
+  
 
 export { router as eventsRouter }; 

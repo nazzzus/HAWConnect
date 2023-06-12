@@ -98,7 +98,13 @@ function BibService() {
         headers: { authorization: cookies.access_token },
       });
 
-      alert("Buch gelöscht!");
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Das Buch wurde gelöscht!',
+        showConfirmButton: false,
+        timer: 1500
+      })        
       const updatedBookList = bookList.filter((book) => book._id !== bookId);
       setBookList(updatedBookList);
     } catch (err) {

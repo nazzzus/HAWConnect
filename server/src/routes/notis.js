@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt';
 import { UserModel } from "../models/Users.js";
 import moment from "moment";
 import multer from 'multer';
+import { ExamModel } from "../models/Exam.js";
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -14,7 +15,7 @@ const upload = multer({ storage });
 //wird benutzt für geburtstagsglückwunsch
 router.get('/birthday/:userId', async (req, res) => {
     try {
-      const userId = req.params.userId; // Annahme: Der aktuelle eingeloggte Benutzer ist im Token gespeichert und kann über req.user.id abgerufen werden
+      const userId = req.params.userId; 
       const user = await UserModel.findById(userId);
   
       if (!user) {
@@ -25,9 +26,9 @@ router.get('/birthday/:userId', async (req, res) => {
       const userBirthday = moment(user.geburtstag).format("MM-DD");
   
       if (currentDate === userBirthday) {
-        return res.json({ message: `Happy birthday, ${user.username}!` });
+        return res.json({ message: `Alles gute zu deinem Geburtstag, ${user.vorname}!` });
       } else {
-        return res.json({ message: `Today is not ${user.username}'s birthday.` });
+        return null;
       }
     } catch (err) {
       console.error(err);
@@ -35,12 +36,34 @@ router.get('/birthday/:userId', async (req, res) => {
     }
   });
 
+  router.get('/exams', async(req, res) => {
+    try {
+      const userId = req.params.userId;
+      const exam = await ExamModel.findById(userId);
+
+      if(!exam){
+        return res.status(404).json({message:"Exam not found!"});
+      }
+
+      const currentDate = moment().format("MM-DD");
+      const examEvent = moment(exam.event).format("MM-DD");
+
+      if (currentDate === examEvent){
+        return res.json({message: `Heute findet ${exam.event} statt!` });
+      }else if( currentDate + 1 === examEvent){
+        return res.json({message: `Morgen findet ${exam.event} statt!` });
+      }else{
+        return null;
+      }
+    } catch (err) {
+      
+    }
+  })
+
   // wird benutzt für Profil
   router.get('/user/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
-  
-      // Finde den Benutzer mit der angegebenen userId
       const user = await UserModel.findById(userId);
   
       if (!user) {

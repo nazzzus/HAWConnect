@@ -10,26 +10,28 @@ import { useCookies } from "react-cookie";
 import moment from 'moment';
 import Swal from 'sweetalert2';
 import '@fullcalendar/core/locales/de';
-
+import '../styles/Modal.css'; // Importieren Sie das CSS-Datei für das Modal-Styling
 
 const Kalender = () => {
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
   const [modalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
-  const [editEvent, setEditEvent] = useState(null);
-  const [deleteEvent, setDeleteEvent] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const eventTimeFormat = {
     hour: 'numeric',
     minute: '2-digit',
     meridiem: false
   };
-
   const calendarRef = useRef(null);
 
   const handleEventClick = (info) => {
     const event = info.event;
   
+    console.log("hallo" + event.id + "x  x  s" + info.event); 
+    console.log("Event ID: " + event.extendedProps._id);
+    console.log("Event Objekt:", event);
+
     Swal.fire({
       title: 'Wählen Sie eine Option',
       input: 'select',
@@ -44,24 +46,60 @@ const Kalender = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
+        if (selectedOption === 'option1') {
+          handleEventDelete(event.extendedProps._id);
+        } else if (selectedOption === 'option2') {
+          // Handle event edit
+        }
       }
     });
-    // Set the event to edit
-    setEditEvent(event);
+  };
+
+
   
-    // Set the event to delete
-    setDeleteEvent(event);
+ 
+  
+  
+  const handleEventDelete = async (eventId) => {
+    try {
+      await axios.delete(`http://localhost:3001/events/delete-event/${eventId}`, {
+        headers: { authorization: cookies.access_token },
+      });
+
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Der Termin wurde gelöscht!',
+        showConfirmButton: false,
+        timer: 1500
+      })        
+      const updatedEventList = events.filter((event) => event._id !== eventId);
+      setEvents(updatedEventList);
+      // Update the events in the state or refetch the events from the server
+      // based on your implementation
+    } catch (err) {
+      console.error(err);
+    }
   };
   
+  const swalWithBootstrapButtons = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn btn-success',
+    cancelButton: 'btn btn-danger'
+  },
+  buttonsStyling: false
+})
 
 
-  const handleEventEdit = async (event) => {
+  
+  
+
+  const handleEventEdit = async (eventId) => {
     try {
-      await axios.put(`http://localhost:3001/events/update-event/${event.id}`, {
-        title: event.title,
-        start: moment(event.start).toDate(),
-        end: moment(event.end).toDate(),
+      await axios.put(`http://localhost:3001/events/update-event/${eventId}`, {
+        title: eventId.title,
+        start: moment(eventId.start).toDate(),
+        end: moment(eventId.end).toDate(),
       }, {
         headers: { authorization: cookies.access_token },
       });
@@ -73,18 +111,6 @@ const Kalender = () => {
     }
   };
 
-  const handleEventDelete = async (event) => {
-    try {
-      await axios.delete(`http://localhost:3001/events/delete-event/${event.id}`, {
-        headers: { authorization: cookies.access_token },
-      });
-
-      // Update the events in the state or refetch the events from the server
-      // based on your implementation
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const onEventAdded = event => {
     let calendarApi = calendarRef.current.getApi();
@@ -92,13 +118,11 @@ const Kalender = () => {
       start: moment(event.start, 'YYYY-MM-DDTHH:mm:ss').toDate(),
       end: moment(event.end, 'YYYY-MM-DDTHH:mm:ss').toDate(),
       title: event.title,
-      
     });
-  }
-  
+  };
 
   useEffect(() => {
-    async function fetchEvents() {
+    const fetchEvents = async () => {
       try {
         const response = await axios.get(`http://localhost:3001/events/get-events/${userId}`, {
           headers: {
@@ -109,10 +133,11 @@ const Kalender = () => {
       } catch (error) {
         console.error(error);
       }
-    }
-
+    };
     fetchEvents();
-  }, [userId, cookies.access_token]);
+  }, [events.userOwner, cookies.access_token]);
+
+  
 
   async function handleEventAdd(data) {
     try {
@@ -136,26 +161,21 @@ const Kalender = () => {
 
   const handleDateClick = (arg) => {
     Swal.fire({
-      title: 'Wählen Sie eine Option',
-      input: 'select',
-      inputOptions: {
-        option1: 'Termin hinzufügen',
-        option2: 'Termin bearbeiten',
-        option3: 'Termin löschen'
-      },
-      inputPlaceholder: 'Wählen Sie eine Option',
+      title: 'Bist du dir sicher?',
+      text: "Willst du einen Termin hinzufügen?",
+      icon: 'warning',
       showCancelButton: true,
-      cancelButtonText: 'Abbrechen',
-      confirmButtonText: 'Auswählen'
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ja, Termin hinzufügen'
     }).then((result) => {
       if (result.isConfirmed) {
-        const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
+        const clickedDate = moment(arg.date).toDate();
+        setSelectedDate(clickedDate);
+        setModalOpen(true);
       }
-    });
-    console.log('Date clicked: ', arg.date);
+    })
   };
-  
 
   return (
     <section>
@@ -177,7 +197,6 @@ const Kalender = () => {
             start: 'today prev,next',
             center: 'title',
             end: 'dayGridMonth,timeGridWeek,timeGridDay',
-
           }}
           eventAdd={event => handleEventAdd(event)}
           eventTimeFormat={eventTimeFormat}
@@ -190,9 +209,12 @@ const Kalender = () => {
           )}
         />
 
-         {/* Add event modal */}
-      <AddEventModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onEventAdded={event => onEventAdded(event)} />
-
+        <AddEventModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          onEventAdded={event => onEventAdded(event)}
+          selectedDate={selectedDate}
+        />
       </div>
     </section>
   );

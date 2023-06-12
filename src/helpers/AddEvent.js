@@ -7,23 +7,20 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 import '../styles/AddEvent.css';
 import Swal from 'sweetalert2';
-
-// Importiere moment und die deutsche Lokalisierung
 import moment from 'moment';
 import 'moment/locale/de';
 import { useNavigate } from "react-router-dom";
 
-// Konfiguriere moment auf Deutsch
 moment.locale('de');
 
-export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit, onDelete }) {
+export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit, onDelete, selectedDate }) {
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
   const navigate = useNavigate();
   const [events, setEvents] = useState({
     title: eventToEdit?.title || '',
-    start: eventToEdit?.start || '',
-    end: eventToEdit?.end || '',
+    start: moment(eventToEdit?.start.toDate()), // Umwandlung in Moment-Objekt entfernen
+    end: moment(eventToEdit?.end || selectedDate).toDate(), // Umwandlung in Moment-Objekt entfernen
     userOwner: userId,
   });
 
@@ -36,15 +33,18 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
 
   const handleEdit = async () => {
     try {
-      await axios.put(`http://localhost:3001/events/update-event/${eventToEdit.id}`, events, {
-        headers: {
-          authorization: cookies.access_token
-        },
+      await axios.put(`http://localhost:3001/events/update-event/${eventToEdit.id}`, {
+        title: events.title,
+        start: moment(events.start).toISOString(),
+        end: moment(events.end).toISOString(),
+      }, {
+        headers: { authorization: cookies.access_token },
       });
       alert('Termin aktualisiert!');
       if (onEventAdded) {
         onEventAdded();
       }
+      onClose(); // Schließe das Modal nach dem Aktualisieren des Termins
     } catch (err) {
       console.error(err);
     }
@@ -53,14 +53,14 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
   const handleDelete = async () => {
     try {
       await axios.delete(`http://localhost:3001/events/delete-event/${eventToEdit.id}`, {
-        headers: {
-          authorization: cookies.access_token
-        },
+        headers: { authorization: cookies.access_token },
       });
+
       alert('Termin gelöscht!');
       if (onDelete) {
         onDelete();
       }
+      onClose(); // Schließe das Modal nach dem Löschen des Termins
     } catch (err) {
       console.error(err);
     }
@@ -72,26 +72,23 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
       handleEdit();
     } else {
       try {
-        await axios.post('http://localhost:3001/events/create-event', events, {
+        await axios.post('http://localhost:3001/events/create-event', {
+          ...events,
+          start: moment(events.start).toISOString(),
+          end: moment(events.end).toISOString(),
+        }, {
           headers: {
             authorization: cookies.access_token
           },
         });
-        Swal.fire({
-          title: 'Termin wurde hinzugefügt!',
-          showClass: {
-            popup: 'animate__animated animate__fadeInDown'
-          },
-          hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-          }
-        }).then(() => {
+         {
           navigate('/Kalender');
           window.location.reload();
           if (onEventAdded) {
             onEventAdded();
           }
-        });
+        };
+        
       } catch (err) {
         console.error(err);
       }
@@ -99,37 +96,43 @@ export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit,
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose}>
-      <div className="modal-main">
-        <form onSubmit={handleSubmit}>
-          <input placeholder='Titel' value={events.title} onChange={(event) => handleChange('title', event.target.value)} />
+    <Modal
+      isOpen={isOpen}
+      onRequestClose={onClose}
+      overlayClassName="modal-overlay"
+      className="modal-main"
+    >
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Titel</label>
+        </div>
+        <input placeholder='Titel' value={events.title} onChange={(event) => handleChange('title', event.target.value)} />
 
-          <div>
-            <label> Startdatum</label>
-            <Datetime
-              value={events.start}
-              onChange={(value) => handleChange('start', value)}
-              locale="de" // Setze die locale-Eigenschaft auf "de" für Deutsch
-              dateFormat="DD.MM.YYYY" // Setze das Datumsformat auf Deutsch
-              timeFormat="HH:mm" // Setze das Uhrzeitformat auf Deutsch
-            />
-          </div>
+        <div>
+          <label>Startdatum</label>
+          <Datetime
+            value={events.start} // Verwenden Sie das Moment-Objekt direkt
+            onChange={(value) => handleChange('start', moment(value).toDate())} // Wandeln Sie in JavaScript Date-Objekt um
+            locale="de"
+            dateFormat="DD.MM.YYYY"
+            timeFormat="HH:mm"
+          />
+        </div>
 
-          <div>
-            <label> Enddatum</label>
-            <Datetime
-              value={events.end}
-              onChange={(value) => handleChange('end', value)}
-              locale="de" // Setze die locale-Eigenschaft auf "de" für Deutsch
-              dateFormat="DD.MM.YYYY" // Setze das Datumsformat auf Deutsch
-              timeFormat="HH:mm" // Setze das Uhrzeitformat auf Deutsch
-            />
-          </div>
+        <div>
+          <label>Enddatum</label>
+          <Datetime
+            value={events.end} // Verwenden Sie das Moment-Objekt direkt
+            onChange={(value) => handleChange('end', moment(value).toDate())} // Wandeln Sie in JavaScript Date-Objekt um
+            locale="de"
+            dateFormat="DD.MM.YYYY"
+            timeFormat="HH:mm"
+          />
+        </div>
 
-          <button>{eventToEdit ? 'Bearbeiten' : 'Termin hinzufügen'}</button>
-          {eventToEdit && <button type="button" onClick={handleDelete}>Löschen</button>}
-        </form>
-      </div>
+        <button>{eventToEdit ? 'Bearbeiten' : 'Termin hinzufügen'}</button>
+        {eventToEdit && <button type="button" onClick={handleDelete}>Löschen</button>}
+      </form>
     </Modal>
   );
 }
