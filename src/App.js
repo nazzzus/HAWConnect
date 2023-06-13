@@ -24,6 +24,7 @@ import News from './components/Newsanzeige';
 import CreateBook from './helpers/create-book'
 import Viewbook from './helpers/view-book';
 import Zitat from './helpers/Zitat';
+import Task from './helpers/Tasks';
 
 //semesterPages
 import Semester1 from './semesterPages/Semester1';
@@ -32,6 +33,7 @@ import Semester3 from './semesterPages/Semester3';
 import Semester4 from './semesterPages/Semester4';
 import Semester5 from './semesterPages/Semester5';
 import Semester6 from './semesterPages/Semester6';
+
 //pläne
 import Pruefungsplan from './pages/Pruefungsplan'
 
@@ -70,6 +72,7 @@ function App() {
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
           <Route path="/" element={ <Home/>} />
+          <Route path="/Tasks" exact element= {<Task/>} />
           <Route path='/Vorlesungsplan' element={<Vorlesungsplan/>} />
           <Route path="/Auth" element={<Auth />} />
           <Route path='/Zitat' exact element={<Zitat/>} />

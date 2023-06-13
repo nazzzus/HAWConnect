@@ -7,6 +7,11 @@
     margin-bottom: 5em;
 }
 
+.marked-event {
+  background-color: red; 
+}
+
+
 .main-content .main-content-row{
     flex-direction: row;
     display: flex;

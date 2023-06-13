@@ -1,204 +1,84 @@
-import React, { useRef, useState, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import AddEventModal from '../helpers/AddEvent';
+import React, { useEffect, useState } from 'react';
+import '../styles/Pruefungsplan.css';
 import axios from 'axios';
-import { useGetUserId } from "../hooks/useGetUserId";
-import { useCookies } from "react-cookie";
-import moment from 'moment';
-import Swal from 'sweetalert2';
-import '@fullcalendar/core/locales/de';
 
+function Vorlesungsplan() {
+    const [exams, setExams] = useState([]);
 
-const Vorlesungsplan = () => {
-  const userId = useGetUserId();
-  const [cookies, _] = useCookies(["access_token"]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState([]);
-  const [editEvent, setEditEvent] = useState(null);
-  const [deleteEvent, setDeleteEvent] = useState(null);
-  const eventTimeFormat = {
-    hour: 'numeric',
-    minute: '2-digit',
-    meridiem: false
-  };
+    useEffect(() => {
+        const fetchExams = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/exam');
+                setExams(response.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
 
-  const calendarRef = useRef(null);
+        fetchExams();
+    }, []);
 
-  const handleEventClick = (info) => {
-    const event = info.event;
-  
-    Swal.fire({
-      title: 'Wählen Sie eine Option',
-      input: 'select',
-      inputOptions: {
-        option1: 'Termin löschen',
-        option2: 'Termin bearbeiten',
-      },
-      inputPlaceholder: 'Wählen Sie eine Option',
-      showCancelButton: true,
-      cancelButtonText: 'Abbrechen',
-      confirmButtonText: 'Auswählen'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
-      }
-    });
-    // Set the event to edit
-    setEditEvent(event);
-  
-    // Set the event to delete
-    setDeleteEvent(event);
-  };
-  
+    const startExamDate = new Date('2023-07-03');
+    const endExamDate = new Date('2023-07-23');
+    let currentExamDate = startExamDate;
 
+    const examWeeks = [];
 
-  const handleEventEdit = async (event) => {
-    try {
-      await axios.put(`http://localhost:3001/events/update-event/${event.id}`, {
-        title: event.title,
-        start: moment(event.start).toDate(),
-        end: moment(event.end).toDate(),
-      }, {
-        headers: { authorization: cookies.access_token },
-      });
+  while (currentExamDate <= endExamDate) {
+    const examWeek = [];
 
-      // Update the events in the state or refetch the events from the server
-      // based on your implementation
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleEventDelete = async (event) => {
-    try {
-      await axios.delete(`http://localhost:3001/events/delete-event/${event.id}`, {
-        headers: { authorization: cookies.access_token },
-      });
-
-      // Update the events in the state or refetch the events from the server
-      // based on your implementation
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onEventAdded = event => {
-    let calendarApi = calendarRef.current.getApi();
-    calendarApi.addEvent({
-      start: moment(event.start, 'YYYY-MM-DDTHH:mm:ss').toDate(),
-      end: moment(event.end, 'YYYY-MM-DDTHH:mm:ss').toDate(),
-      title: event.title,
-      
-    });
-  }
-  
-
-  useEffect(() => {
-    async function fetchEvents() {
-      try {
-        const response = await axios.get(`http://localhost:3001/events/get-events/${userId}`, {
-          headers: {
-            authorization: cookies.access_token
-          }
-        });
-        setEvents(response.data);
-      } catch (error) {
-        console.error(error);
-      }
+    for (let i = 0; i < 7; i++) {
+      const examDate = new Date(currentExamDate);
+      examDate.setDate(examDate.getDate() + i);
+      const examsOnDay = exams.filter((exam) => new Date(exam.datum).toDateString() === examDate.toDateString());
+      examWeek.push({ date: examDate, exams: examsOnDay });
     }
 
-    fetchEvents();
-  }, [userId, cookies.access_token]);
-
-  async function handleEventAdd(data) {
-    try {
-      await axios.post('http://localhost:3001/events/create-event', data.event, {
-        headers: {
-          authorization: cookies.access_token
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    examWeeks.push(examWeek);
+    currentExamDate.setDate(currentExamDate.getDate() + 7);
   }
 
-  const handleEventDidMount = (eventInfo) => {
-    const event = eventInfo.event;
-    const startTime = moment(event.start).format('H:mm');
-    const endTime = moment(event.end).format('H:mm');
-    const timeRange = `${startTime}-${endTime}`;
-    event.setExtendedProp('timeRange', timeRange);
-  };
+    return (
+        <div className='main-plan'>
+            <h1>Prüfungsplan</h1>
+            <h2>Für den Zeitraum der Prüfungsphase 03.07.2023 bis zum 23.07.2023.</h2>
+            <div className='main-content'>
+                {examWeeks.map((examWeek, index) => (
+                    <div className='main-content-row' key={index}>
+                        <div className='main-content-row-item'>
+                            <p>{index === 0 ? 'Erste' : index === 1 ? 'Zweite' : 'Dritte'} Prüfungswoche</p>
+                            <p>{examWeek[0].date.toLocaleDateString()} - {examWeek[6].date.toLocaleDateString()}</p>
+                        </div>
+                        {examWeek.map((examDay, index) => (
+                            <div className='main-content-row-item' key={index}>
+                                <div className='item-info'>
+                                <strong><p>{examDay.date.toLocaleDateString(undefined, { weekday: 'long' })} - {examDay.date.toLocaleDateString()}</p></strong>
+                                    {examDay.exams.length > 0 ? (
+                                <div className="exam-info">
+                                    {examDay.exams.map((exam, index) => (
+                                     <div key={index}>
+                                        <div className='exam-info-name'>  <strong><p>{exam.modul}</p> </strong></div>
+                                        <div className='exam-info-rest'> 
+                                        <p>Prüfer: {exam.prof}</p>
+                                        <p>Raum: {exam.raum}</p>
+                                        <p>Klausurart: {exam.art}</p>
+                                        <p>Klausurtyp: {exam.typ}</p>
+                                        </div>
+                                        
+                                    </div>
+                                         ))}
+                                    </div>
+                                    ) : (
+                                        <p><br /><br />Keine Prüfung an diesem Tag!</p>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
 
-  const handleDateClick = (arg) => {
-    Swal.fire({
-      title: 'Wählen Sie eine Option',
-      input: 'select',
-      inputOptions: {
-        option1: 'Termin hinzufügen',
-        option2: 'Termin bearbeiten',
-        option3: 'Termin löschen'
-      },
-      inputPlaceholder: 'Wählen Sie eine Option',
-      showCancelButton: true,
-      cancelButtonText: 'Abbrechen',
-      confirmButtonText: 'Auswählen'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
-      }
-    });
-    console.log('Date clicked: ', arg.date);
-  };
-  
-
-  return (
-    <section>
-      <div className='sem-banner'>
-        <h1>Prüfungsplan</h1>
-        <h2>Für das aktuelle Semester</h2>
-      </div>
-      <div className='pplan-button'>
-      <button onClick={() => setModalOpen(true)}>Füge einen Termin hinzu</button>
-      </div>
-
-      <div style={{ position: 'relative', zIndex: 0 }}>
-        <FullCalendar
-          locale="de"
-          ref={calendarRef}
-          events={events}
-          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          eventClick={handleEventClick}
-          dateClick={handleDateClick}
-          initialView={'dayGridMonth'}
-          headerToolbar={{
-            start: 'today prev,next',
-            center: 'title',
-            end: 'dayGridMonth,timeGridWeek,timeGridDay',
-
-          }}
-          eventAdd={event => handleEventAdd(event)}
-          eventTimeFormat={eventTimeFormat}
-          eventDidMount={handleEventDidMount}
-          eventContent={(eventInfo) => (
-            <>
-              <div>{eventInfo.event.extendedProps.timeRange}</div>
-              <div>{eventInfo.event.title}</div>
-            </>
-          )}
-        />
-
-         {/* Add event modal */}
-      <AddEventModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onEventAdded={event => onEventAdded(event)} />
-
-      </div>
-    </section>
-  );
-};
-
-export default Vorlesungsplan
+export default Vorlesungsplan;

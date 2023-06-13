@@ -17,6 +17,7 @@ import { notisRouter } from './routes/notis.js';
 import { profilbildRouter } from './routes/profilbild.js';
 import { icsRouter } from './routes/ics.js';
 import { semRouter } from './routes/semester.js';
+import { sem2Router } from './routes/sem2.js';
 
 const app = express()
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/auth", userRouter);
+app.use('/sem2', sem2Router);
 app.use("/meals", mealsRouter);
 app.use("/news", newsRouter);
 app.use('/book', booksRouter);

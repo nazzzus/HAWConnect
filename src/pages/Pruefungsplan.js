@@ -1,84 +1,153 @@
-import React, { useEffect, useState } from 'react';
-import '../styles/Pruefungsplan.css';
+import React, { useRef, useState, useEffect } from 'react';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
 import axios from 'axios';
+import { useGetUserId } from "../hooks/useGetUserId";
+import { useCookies } from "react-cookie";
+import moment from 'moment';
+import Swal from 'sweetalert2';
+import '@fullcalendar/core/locales/de';
+import '../styles/Pruefungsplan.css';
 
-function Pruefungsplan() {
-    const [exams, setExams] = useState([]);
+const Pruefungsplan = () => {
+  const userId = useGetUserId();
+  const [cookies, _] = useCookies(["access_token"]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [editEvent, setEditEvent] = useState(null);
+  const [deleteEvent, setDeleteEvent] = useState(null);
+  const [exams, setExams] = useState([]);
+  const [calendarKey, setCalendarKey] = useState(Date.now()); // Neues State für das Key-Attribut
 
-    useEffect(() => {
-        const fetchExams = async () => {
-            try {
-                const response = await axios.get('http://localhost:3001/exam');
-                setExams(response.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/exam');
+        const convertedEvents = convertExamsToEvents(response.data);
+        setExams(convertedEvents);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-        fetchExams();
-    }, []);
+    fetchExams();
+  }, []);
 
-    const startExamDate = new Date('2023-07-03');
-    const endExamDate = new Date('2023-07-23');
-    let currentExamDate = startExamDate;
+  const convertExamsToEvents = (exams) => {
+    return exams.map((exam) => {
+      return {
+        id: exam._id,
+        title: exam.modul,
+        start: moment(exam.datum).toDate(),
+        end: moment(exam.datum).toDate(),
+        extendedProps: {
+          art: exam.art,
+          typ: exam.typ,
+          prof: exam.prof,
+          raum: exam.raum,
+          markedBy: exam.markedBy || [],
+        },
+        classNames: exam.markedBy.includes(userId) ? 'marked-event' : '',
+      };
+    });
+  };
 
-    const examWeeks = [];
+  const handleEventClick = (eventInfo) => {
+    const { title, extendedProps } = eventInfo.event;
+    const { art, typ, prof, raum, markedBy } = extendedProps;
+    const isMarked = markedBy.includes(userId);
 
-  while (currentExamDate <= endExamDate) {
-    const examWeek = [];
+    Swal.fire({
+      title,
+      html: `
+        <strong>Art:</strong> ${art}<br>
+        <strong>Typ:</strong> ${typ}<br>
+        <strong>Prof:</strong> ${prof}<br>
+        <strong>Raum:</strong> Steht nicht fest <br>
+        <strong>Markiert:</strong> ${isMarked ? 'Ja' : 'Nein'}
+      `,
+      showCloseButton: true,
+      confirmButtonText: isMarked ? 'Markierung aufheben' : 'Markieren',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const mark = !isMarked;
 
-    for (let i = 0; i < 7; i++) {
-      const examDate = new Date(currentExamDate);
-      examDate.setDate(examDate.getDate() + i);
-      const examsOnDay = exams.filter((exam) => new Date(exam.datum).toDateString() === examDate.toDateString());
-      examWeek.push({ date: examDate, exams: examsOnDay });
-    }
+        axios
+          .put(`http://localhost:3001/exam/mark/${eventInfo.event.id}`, {
+            userId,
+            mark,
+          })
+          .then(() => {
+            const updatedExams = exams.map((exam) => {
+              if (exam.id === eventInfo.event.id) {
+                return {
+                  ...exam,
+                  extendedProps: {
+                    ...exam.extendedProps,
+                    markedBy: mark
+                      ? [...exam.extendedProps.markedBy, userId]
+                      : exam.extendedProps.markedBy.filter((markedUserId) => markedUserId !== userId),
+                  },
+                  classNames: mark ? 'marked-event' : '',
+                };
+              }
+              return exam;
+            });
 
-    examWeeks.push(examWeek);
-    currentExamDate.setDate(currentExamDate.getDate() + 7);
-  }
+            setExams(updatedExams);
+            setCalendarKey(Date.now()); // Key-Attribut aktualisieren, um die Komponente neu zu rendern
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+    });
+  };
 
-    return (
-        <div className='main-plan'>
-            <h1>Prüfungsplan</h1>
-            <h2>Für den Zeitraum der Prüfungsphase 03.07.2023 bis zum 23.07.2023.</h2>
-            <div className='main-content'>
-                {examWeeks.map((examWeek, index) => (
-                    <div className='main-content-row' key={index}>
-                        <div className='main-content-row-item'>
-                            <p>{index === 0 ? 'Erste' : index === 1 ? 'Zweite' : 'Dritte'} Prüfungswoche</p>
-                            <p>{examWeek[0].date.toLocaleDateString()} - {examWeek[6].date.toLocaleDateString()}</p>
-                        </div>
-                        {examWeek.map((examDay, index) => (
-                            <div className='main-content-row-item' key={index}>
-                                <div className='item-info'>
-                                <strong><p>{examDay.date.toLocaleDateString(undefined, { weekday: 'long' })} - {examDay.date.toLocaleDateString()}</p></strong>
-                                    {examDay.exams.length > 0 ? (
-                                <div className="exam-info">
-                                    {examDay.exams.map((exam, index) => (
-                                     <div key={index}>
-                                        <div className='exam-info-name'>  <strong><p>{exam.modul}</p> </strong></div>
-                                        <div className='exam-info-rest'> 
-                                        <p>Prüfer: {exam.prof}</p>
-                                        <p>Raum: {exam.raum}</p>
-                                        <p>Klausurart: {exam.art}</p>
-                                        <p>Klausurtyp: {exam.typ}</p>
-                                        </div>
-                                        
-                                    </div>
-                                         ))}
-                                    </div>
-                                    ) : (
-                                        <p><br /><br />Keine Prüfung an diesem Tag!</p>
-                                    )}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-}
+  const eventTimeFormat = {
+    hour: 'numeric',
+    minute: '2-digit',
+    meridiem: false,
+  };
+
+  const calendarRef = useRef(null);
+
+  return (
+    <section>
+      <div className='sem-banner'>
+        <h1>Prüfungsplan</h1>
+        <h2>Für das aktuelle Semester</h2>
+      </div>
+      <div className='pplan-button'></div>
+
+      <div style={{ position: 'relative', zIndex: 0 }}>
+        <FullCalendar
+          key={calendarKey} // Key-Attribut verwenden
+          locale='de'
+          ref={calendarRef}
+          events={exams}
+          eventClick={handleEventClick}
+          plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+          initialView='dayGridMonth'
+          headerToolbar={{
+            start: 'today prev,next',
+            center: 'title',
+            end: 'dayGridMonth',
+          }}
+          eventTimeFormat={eventTimeFormat}
+          eventContent={(eventInfo) => (
+            <>
+              <div>{eventInfo.event.extendedProps.art}</div>
+              <div>{eventInfo.event.title}</div>
+            </>
+          )}
+          eventClassNames='custom-event'
+        />
+      </div>
+    </section>
+  );
+};
 
 export default Pruefungsplan;
