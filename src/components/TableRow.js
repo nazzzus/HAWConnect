@@ -13,56 +13,72 @@ function TableRow({ module, belegt, bestanden, pvlBestanden, image }) {
     setNote(null);
   }, [module]);
 
-  const handleBelegtToggle = () => {
+  const handleBelegtToggle = async () => {
     if (!isBestanden && !isPvlBestanden) {
       setIsBelegt(!isBelegt);
+      try {
+        await axios.put(`http://localhost:3001/sem2/toggle-belegt/${module._id}`, {
+          belegt: !isBelegt,
+        });
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-
-  const handleBestandenToggle = () => {
-    setIsBestanden(!isBestanden);
-    if (isBelegt) {
-      setIsBelegt(false);
-    }
+  
+  const handleNoteChange = (event) => {
+    setNote(event.target.value);
   };
-
-  const handlePVLBestandenToggle = () => {
-    setIsPvlBestanden(!isPvlBestanden);
-    if (isBelegt) {
-      setIsBelegt(false);
-    }
-  };
-
+  
   const handleImageClick = () => {
     setIsImageVisible(!isImageVisible);
   };
 
-  const handleNoteChange = (event) => {
-    setNote(event.target.value);
+  const handlePVLBestandenToggle = async () => {
+    setIsPvlBestanden(!isPvlBestanden);
+    if (isBelegt) {
+      setIsBelegt(false);
+    }
+    try {
+      await axios.put(`http://localhost:3001/sem2/toggle-pvl/${module._id}`, {
+        pvlErhalten: !isPvlBestanden,
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  
+  const handleBestandenToggle = async () => {
+    setIsBestanden(!isBestanden);
+    if (isBelegt) {
+      setIsBelegt(false);
+    }
+    try {
+      await axios.put(`http://localhost:3001/sem2/toggle-bestanden/${module._id}`, {
+        modulBestanden: !isBestanden,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   const handleNoteSave = async () => {
     if (!note) {
       return;
     }
-
     setIsLoading(true);
-
     try {
-      // Hier API-Aufruf zum Speichern der Note
-      await axios.put(`/sem2/${module._id}`, {
+      await axios.put(`http://localhost:3001/sem2/update-note/${module._id}`, {
         note,
       });
     } catch (error) {
       console.log(error);
     }
-
     setIsLoading(false);
   };
-
   return (
     <tr>
-      <td>{module.modulName}</td>
+      <td>{module.name}</td>
       <td><button onClick={handleBelegtToggle}>{isBelegt ? '★' : '☆'}</button></td>
       <td><button onClick={handlePVLBestandenToggle}>{isPvlBestanden ? '✔' : '✘'}</button></td>
       <td><button onClick={handleBestandenToggle}>{isBestanden ? '✔' : '✘'}</button></td>

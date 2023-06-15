@@ -6,7 +6,7 @@ function Benachrichtigung() {
 
 
   return (
-    <div>Benachrichtigungen
+    <div>
       <BirthdayGreetings/>
     </div>
 

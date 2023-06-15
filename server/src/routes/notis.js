@@ -6,6 +6,7 @@ import { UserModel } from "../models/Users.js";
 import moment from "moment";
 import multer from 'multer';
 import { ExamModel } from "../models/Exam.js";
+import { BookModel }  from '../models/Books.js'
 
 const router = express.Router();
 const storage = multer.memoryStorage();
@@ -36,22 +37,46 @@ router.get('/birthday/:userId', async (req, res) => {
     }
   });
 
-  router.get('/exams', async(req, res) => {
+  router.get('/exams/:userId', async (req, res) => {
     try {
       const userId = req.params.userId;
-      const exam = await ExamModel.findById(userId);
+  
+      const exams = await ExamModel.find({
+        markedBy: userId
+      });
+  
+      if (!exams || exams.length === 0) {
+        return res.json({message: "Keine bevorstehenden Prüfungen"});
+      }
+  
+      let examTitles = exams.map(exam => exam.modul);
+  
+      return res.json({message: `Folgende Prüfungen hast du markiert für das aktuelle Semester:${examTitles.join(', ')}`});
 
-      if(!exam){
-        return res.status(404).json({message:"Exam not found!"});
+
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({message: "Serverfehler"});
+    }
+  });
+  
+
+  router.get('/books', async(req, res) => {
+    try {
+      const userId = req.params.userId;
+      const book = await BookModel.findById(userId);
+
+      if(!book){
+        return res.status(404).json({message:"Book not found!"});
       }
 
       const currentDate = moment().format("MM-DD");
-      const examEvent = moment(exam.event).format("MM-DD");
+      const bookEvent = moment(book.event).format("MM-DD");
 
-      if (currentDate === examEvent){
-        return res.json({message: `Heute findet ${exam.event} statt!` });
-      }else if( currentDate + 1 === examEvent){
-        return res.json({message: `Morgen findet ${exam.event} statt!` });
+      if (currentDate === bookEvent){
+        return res.json({message: `Heute findet ${book.event} statt!` });
+      }else if( currentDate + 1 === bookEvent){
+        return res.json({message: `Morgen findet ${book.event} statt!` });
       }else{
         return null;
       }
@@ -59,6 +84,64 @@ router.get('/birthday/:userId', async (req, res) => {
       
     }
   })
+
+  router.get('/books/comingdue/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const currentDate = moment();
+      const dueDate = moment().add(7, 'days');
+  
+      const books = await BookModel.find({
+        userOwner: userId,
+        rueckgabedatum: {
+          $gte: currentDate.toDate(),
+          $lte: dueDate.toDate()
+        }
+      });
+  
+      if (!books || books.length === 0) {
+        return res.json({message: null});
+      }
+  
+      // Iterate through books and gather all the titles
+      let bookTitles = books.map(book => book.buchtitel);
+  
+      return res.json({message: `Du musst ${books.length} Bücher in den nächsten 7 Tagen zurückgeben: ${bookTitles.join(', ')}`});
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({message: "Server error"});
+    }
+  });
+
+  router.get('/books/comingdueToday/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const startOfDay = moment().startOf('day');
+      const endOfDay = moment().endOf('day');
+  
+      const books = await BookModel.find({
+        userOwner: userId,
+        rueckgabedatum: {
+          $gte: startOfDay.toDate(),
+          $lte: endOfDay.toDate()
+        }
+      });
+  
+      if (!books || books.length === 0) {
+        return res.json({message: null});
+      }
+  
+      // Iterate through books and gather all the titles
+      let bookTitles = books.map(book => book.buchtitel);
+  
+      return res.json({message: `Heute abgeben musst du: ${bookTitles.join(', ')}`});
+    } catch (err) {
+      console.error(err);
+      return res.status(500).json({message: "Server error"});
+    }
+  });
+  
+  
 
   // wird benutzt für Profil
   router.get('/user/:userId', async (req, res) => {

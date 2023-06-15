@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { UserModel } from "../models/Users.js";
 import moment from "moment";
+import { Sem2Model } from "../models/Sem2.js";
 
 
 const router = express.Router();
@@ -49,6 +50,21 @@ router.post("/register", async(req, res) => {
 
 
 
+const initialModules2 = [
+  { name: 'Informationssysteme I' },
+  { name: 'Theoretische Informatik' },
+  { name: 'Programmiermethodik II' },
+  { name: 'Quantitative Methoden' },
+  { name: 'Betriebswirtschaftslehre II' },
+];
+
+const initializeUserModules = async (userId) => {
+  const sem2 = new Sem2Model({ modul: initialModules2, userOwner: userId });
+  await sem2.save();
+};
+
+
+
 
 
 router.post("/login", async (req, res) => {
@@ -57,19 +73,27 @@ router.post("/login", async (req, res) => {
   const user = await UserModel.findOne({username: username});
 
   if(!user) {
-      return res.status(400).json({   message: "User doesn't exist!"  });
+    return res.status(400).json({message: "User doesn't exist!"});
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if(!isPasswordValid){
-      return res.status(400).json({   message: "Password is incorrect!"   });
+    return res.status(400).json({message: "Password is incorrect!"});
   }
 
+  const token = jwt.sign({id: user._id}, "secret");
 
-  const token = jwt.sign({    id: user._id    }, "secret"    );
+  const sem2Doc = await Sem2Model.findOne({userOwner: user._id});
+
+
+  if (!sem2Doc) {
+    await initializeUserModules(user._id);
+  }
+
   res.json({token, userID: user._id});
 });
+
 
 // Handler für das Bearbeiten eines Datenobjekts
 router.put("/edit/:id", (req, res) => {

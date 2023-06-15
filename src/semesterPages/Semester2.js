@@ -28,18 +28,20 @@ function Kurse() {
   useEffect(() => {
     const fetchModules = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/sem2', 
+        const response = await axios.get(`http://localhost:3001/sem2/get/${userId}`, 
         {
           headers: { authorization: cookies.access_token },
         });
+        console.log(response.data);  
         setModules(response.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.response ? error.response.data : error.message);
       }
     };
-
+  
     fetchModules();
   }, []);
+  
 
   return (
     <div className='sem-main'>
