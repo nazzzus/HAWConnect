@@ -10,7 +10,7 @@ import moment from 'moment';
 import 'moment/locale/de';
 import { useNavigate } from "react-router-dom";
 
-// Konfiguriere moment auf Deutsch
+
 moment.locale('de');
 
 export default function EventModal({ isOpen, onClose, onEventAdded, eventToEdit, onDelete }) {

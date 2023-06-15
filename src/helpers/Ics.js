@@ -11,7 +11,6 @@ const UploadICS = () => {
     const [events, setEvents] = useState([]);
 
     useEffect(() => {
-      // HTTP-Anfrage an Backend senden, um ICS-Daten abzurufen
       axios.get(`http://localhost:3001/ics-events/${userId}`,
       {
         headers: { authorization: cookies.access_token },
@@ -41,7 +40,6 @@ const UploadICS = () => {
           headers: { "Content-Type": "multipart/form-data" },
         });
   
-        // Erfolgreiches Hochladen der Datei
         console.log("ICS file uploaded successfully");
       } catch (error) {
         console.error("Fehler beim Hochladen der ICS-Datei:", error);

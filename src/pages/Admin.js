@@ -13,12 +13,20 @@ function Admin() {
   const [newsList, setNewsList] = useState([]);
   const navigate = useNavigate();
   const currentDate = new Date().toLocaleDateString("de-DE");
+  const currentDatex = new Date().toISOString().split('T')[0]; 
+
   const [editNewsId, setEditNewsId] = useState(null);
   const [editNews, setEditNews] = useState({
     titel: "",
     autor: "",
   });
 
+  const [news, setNews] = useState({
+    titel: "",
+    autor: "",
+    datum: currentDatex,
+    userOwner: userId,
+  });
 
 
   const handleChange = (event) => {
@@ -59,7 +67,6 @@ function Admin() {
       }).then(() => {
         navigate("/admin");
         window.location.reload();
-      
   })
     } catch (err) {
       console.error(err);
@@ -72,13 +79,6 @@ function Admin() {
     return date.toLocaleDateString("de-DE");
   };
   
-
-  const [news, setNews] = useState({
-    titel: "",
-    autor: "",
-    datum: currentDate,
-    userOwner: userId,
-  });
   
 
   const handleDelete = async (newsId) => {
