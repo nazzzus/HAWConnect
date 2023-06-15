@@ -60,6 +60,17 @@ function App() {
     }
   };
 
+  const checkUserRole = () => {
+    
+
+
+    if (userId != null) {
+      return <Bibliothek />;
+    } else {
+      return <Auth />;
+    }
+  };
+
 
   return (
     <div className="App">
@@ -67,8 +78,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path='/Planer' exact element={<Planer/>} />
-          <Route path='/Bibliothek' exact element={
-            <Bibliothek/>} />
+          <Route path='/Bibliothek' exact element= {checkUserRole()} />
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
           <Route path="/" element={ <Home/>} />
