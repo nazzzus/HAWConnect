@@ -1,17 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function TableRow({ module, belegt, bestanden, pvlBestanden, image }) {
-  const [isBelegt, setIsBelegt] = useState(belegt);
-  const [isPvlBestanden, setIsPvlBestanden] = useState(pvlBestanden)
-  const [isBestanden, setIsBestanden] = useState(bestanden);
+function TableRow({ module, image }) {
+  const [isBelegt, setIsBelegt] = useState(module.belegt);
+  const [isPvlBestanden, setIsPvlBestanden] = useState(module.pvlErhalten)
+  const [isBestanden, setIsBestanden] = useState(module.modulBestanden);
   const [isImageVisible, setIsImageVisible] = useState(false);
-  const [note, setNote] = useState(null);
+  const [note, setNote] = useState(module.note);
+  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+
   useEffect(() => {
-    setNote(null);
+    setNote(module.note);
   }, [module]);
+
 
   const handleBelegtToggle = async () => {
     if (!isBestanden && !isPvlBestanden) {
@@ -62,6 +65,10 @@ function TableRow({ module, belegt, bestanden, pvlBestanden, image }) {
     }
   };
   
+  const handleNoteEditToggle = () => {
+    setIsEditing(!isEditing);
+  }
+
   const handleNoteSave = async () => {
     if (!note) {
       return;
@@ -74,8 +81,10 @@ function TableRow({ module, belegt, bestanden, pvlBestanden, image }) {
     } catch (error) {
       console.log(error);
     }
+    setIsEditing(false);
     setIsLoading(false);
   };
+  
   return (
     <tr>
       <td>{module.name}</td>
@@ -87,10 +96,10 @@ function TableRow({ module, belegt, bestanden, pvlBestanden, image }) {
           type='text'
           value={note || ''}
           onChange={handleNoteChange}
-          disabled={isLoading}
+          disabled={!isEditing || isLoading}
         />
-        <button onClick={handleNoteSave} disabled={isLoading}>
-          {isLoading ? 'Speichern...' : 'Speichern'}
+        <button onClick={isEditing ? handleNoteSave : handleNoteEditToggle} disabled={isLoading}>
+          {isEditing ? (isLoading ? 'Speichern...' : 'Speichern') : 'Bearbeiten'}
         </button>
       </td>
       <td><button onClick={handleImageClick}>Mehr Informationen</button></td>
