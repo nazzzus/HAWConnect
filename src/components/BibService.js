@@ -259,7 +259,7 @@ function BibService() {
                     onChange={(event) => setEditBook({...editBook, rueckgabedatum: event.target.value })}
                     />
                   ) : (
-                    formatDate(book.ausleihdatum)
+                    formatDate(book.rueckgabedatum)
                   )}
                   </td>
                 <td>
