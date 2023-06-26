@@ -1,64 +1,73 @@
-import React, { useEffect, useState } from 'react';
-import TableRow from '../components/TableRow';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import TableRow1 from '../components/TableRow1';
+import '../styles/Kurse.css';
+import PT from '../images/Module/Sem1/PT.png';
+import GWI from '../images/Module/Sem1/GWI.png';
+import PM1 from '../images/Module/Sem1/PM1.png';
+import GM from '../images/Module/Sem1/GM.png';
+import BWL1 from '../images/Module/Sem1/BWL1.png';
+import { useNavigate } from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { useGetUserId } from "../hooks/useGetUserId";
-import '../styles/Semester.css';
+import Swal from 'sweetalert2';
 
-function Semester1() {
-  const [semesterData, setSemesterData] = useState([]);
+const data = [
+  { module: 'Grundlagen der Mathematik', image: GM },
+  { module: 'Programmiermethodik II',  image: GWI },
+  { module: 'Quantitative Methoden',  image: PM1 },
+  { module: 'Theoretische Informatik', image: PT },
+  { module: 'Betriebswirtschaftslehre II', image: BWL1 },
+];
+
+function Kurse() {
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
+  const [modules, setModules] = useState([]);
 
   useEffect(() => {
-    const fetchSemesterData = async () => {
+    const fetchModules = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/sem/user/${userId}`,
+        const response = await axios.get(`http://localhost:3001/sem1/get/${userId}`, 
         {
           headers: { authorization: cookies.access_token },
-        }
-      );
-        setSemesterData(response.data.sem1);
+        });
+        console.log(response.data);  
+        setModules(response.data);
       } catch (error) {
-        console.log(error);
+        console.log(error.response ? error.response.data : error.message);
       }
     };
-
-    fetchSemesterData();
+  
+    fetchModules();
   }, []);
+  
 
   return (
-    <div className="sem">
-      <div className='sem-main'>
-    <div className='sem-banner'>
-      <h1>Semester 1</h1>
-      <h2>Deine Kurse aus dem ersten Semester</h2>
-    </div>
+    <div className='sem-main'>
+      <div className='sem-banner'>
+        <h1>Semester 1</h1>
+        <h2>Deine Kurse aus dem zweiten Semester</h2>
+      </div>
       <table>
         <thead>
           <tr>
             <th>Module</th>
             <th>Belegt</th>
-            <th>Bestanden</th>
+            <th>PVL erhalten</th>
+            <th>Modul abgeschlossen</th>
             <th>Note</th>
             <th>Informationen</th>
           </tr>
         </thead>
         <tbody>
-          {semesterData.map((rowData, index) => (
-            <TableRow
-              key={index}
-              module={rowData.module}
-              belegt={rowData.belegt}
-              bestanden={rowData.bestanden}
-              image={rowData.image}
-            />
+          {modules.map((module, index) => (
+            <TableRow1 key={index} module={module} image={data[index].image} />
           ))}
         </tbody>
       </table>
     </div>
-    </div>
   );
 }
 
-export default Semester1;
+export default Kurse;

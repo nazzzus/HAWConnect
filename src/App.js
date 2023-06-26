@@ -72,19 +72,17 @@ function App() {
   };
 
 
-  return (
-    <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path='/Planer' exact element={<Planer/>} />
-          <Route path='/Bibliothek' exact element= {checkUserRole()} />
+  const checkUserRoleP = () => {
+    if (userId != null) {
+      return (
+        <>
+        
+          <Route path='/Bibliothek' exact element={<Bibliothek />} />
           <Route path='/Profil' exact element={<Profil/>} />
           <Route path='/BibList' exact element={<BibList/>} />
           <Route path="/" element={ <Home/>} />
           <Route path="/Tasks" exact element= {<Task/>} />
           <Route path='/Vorlesungsplan' element={<Vorlesungsplan/>} />
-          <Route path="/Auth" element={<Auth />} />
           <Route path='/Zitat' exact element={<Zitat/>} />
           <Route path='/Create' exact element={<Create/>} />
           <Route path='/Saved' exact element={<Saved/>} />
@@ -104,7 +102,30 @@ function App() {
           <Route path='/Viewbook' exact element={<Viewbook/>} />
           <Route path='/Pruefungsplan' exact element={<Pruefungsplan/>} />
           <Route path='/Schedule' exact element={<Schedule/>} />
-          <Route path='*' exact element={<KeineSeite/>} />
+          <Route path='/Planer' exact element={<Planer/>} />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Route path='/Auth' exact element={<Auth />} />
+          {/* Weitere Route-Komponenten für den nicht eingeloggten Benutzer */}
+        </>
+      );
+    }
+  };
+
+
+
+  return (
+    <div className="App">
+      <Router>
+        <Navbar />
+        <Switch>
+          {checkUserRoleP()}
+          {/* <Route path='/Bibliothek' exact element= {checkUserRole()} /> */}
+          <Route path="/Auth" element={<Auth />} />
+          <Route path='*' exact element={<Auth />} />
           <Route path="/admin" element={checkAdminRole()} />
         </Switch>
         <Footer />

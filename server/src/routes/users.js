@@ -3,7 +3,12 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { UserModel } from "../models/Users.js";
 import moment from "moment";
+import { Sem1Model } from "../models/Sem2.js";
 import { Sem2Model } from "../models/Sem2.js";
+import { Sem3Model } from "../models/Sem2.js";
+import { Sem4Model } from "../models/Sem2.js";
+import { Sem5Model } from "../models/Sem2.js";
+import { Sem6Model } from "../models/Sem2.js";
 
 
 const router = express.Router();
@@ -49,6 +54,13 @@ router.post("/register", async(req, res) => {
 });
 
 
+const initialModules1 = [
+  { name: 'Grundlagen der Mathematik' },
+  { name: 'Grundlagen der Wirtschaftsinformatik' },
+  { name: 'Programmiermethodik I' },
+  { name: 'Programmiertechnik' },
+  { name: 'Betriebswirtschaftslehre I' },
+];
 
 const initialModules2 = [
   { name: 'Informationssysteme I' },
@@ -58,9 +70,54 @@ const initialModules2 = [
   { name: 'Betriebswirtschaftslehre II' },
 ];
 
+const initialModules3 = [
+  { name: 'Wahrscheinlichkeitsrechnung und Statistik' },
+  { name: 'Algorithmen und Datenstrukturen' },
+  { name: 'Software Engineerinig und Architektur I' },
+  { name: 'Wirtschaftsinformatik I' },
+  { name: 'Betriebswirtschaftslehre III' },
+];
+
+const initialModules4 = [
+  { name: 'Informationssysteme II' },
+  { name: 'Software Engineering und Architektur II' },
+  { name: 'Rechnernetze und Betriebssysteme' },
+  { name: 'Wirtschaftsinformatik II' },
+  { name: 'Betriebswirtschaftslehre IV' },
+];
+
+const initialModules5 = [
+  { name: 'Projekt' },
+  { name: 'Seminar Wirtschaftsinformatik' },
+  { name: 'Wirtschaftsinformatik III' },
+  { name: 'Recht' },
+  { name: 'Wahlpflichtfach I' },
+];
+
+const initialModules6 = [
+  { name: 'Bachelorarbeit' },
+  { name: 'Wahlpflichtfach II' },
+  { name: 'Wahlpflichtfach III' },
+  { name: 'Gesellschaftswissenschaft I' },
+  { name: 'Gesellschaftswissenschaft II' },
+];
+
+
+
 const initializeUserModules = async (userId) => {
+  const sem1 = new Sem1Model({ modul: initialModules1, userOwner: userId });
+  await sem1.save();
   const sem2 = new Sem2Model({ modul: initialModules2, userOwner: userId });
   await sem2.save();
+  const sem3 = new Sem3Model({ modul: initialModules3, userOwner: userId });
+  await sem3.save();
+  const sem4 = new Sem4Model({ modul: initialModules4, userOwner: userId });
+  await sem4.save();
+  const sem5 = new Sem5Model({ modul: initialModules5, userOwner: userId });
+  await sem5.save();
+  const sem6 = new Sem6Model({ modul: initialModules6, userOwner: userId });
+  await sem6.save();
+
 };
 
 
@@ -84,10 +141,15 @@ router.post("/login", async (req, res) => {
 
   const token = jwt.sign({id: user._id}, "secret");
 
+  const sem1Doc = await Sem1Model.findOne({userOwner: user._id});
   const sem2Doc = await Sem2Model.findOne({userOwner: user._id});
+  const sem3Doc = await Sem3Model.findOne({userOwner: user._id});
+  const sem4Doc = await Sem4Model.findOne({userOwner: user._id});
+  const sem5Doc = await Sem5Model.findOne({userOwner: user._id});
+  const sem6Doc = await Sem6Model.findOne({userOwner: user._id});
 
 
-  if (!sem2Doc) {
+  if (!sem1Doc || !sem2Doc || !sem3Doc || !sem4Doc || !sem5Doc || !sem6Doc ) {
     await initializeUserModules(user._id);
   }
 

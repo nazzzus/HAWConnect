@@ -1,4 +1,4 @@
-import express from 'express'
+/* import express from 'express'
 import mongoose from 'mongoose'
 import { Sem1Model } from '../models/Sem1.js'
 import { Sem2Model } from '../models/Sem2.js'
@@ -43,4 +43,4 @@ router.post('/add-sem1', verifyToken, async(req, res) => {
     }
 })
 
-export { router as semRouter }
+export { router as semRouter } */

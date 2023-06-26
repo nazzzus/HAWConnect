@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+/* import mongoose from "mongoose";
 
 const Sem1Schema = new mongoose.Schema({
     module: {
@@ -24,3 +24,4 @@ const Sem1Schema = new mongoose.Schema({
 });
 
 export const Sem1Model = mongoose.model('Sem1', Sem1Schema);
+ */

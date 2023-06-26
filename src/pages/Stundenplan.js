@@ -3,7 +3,6 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import AddEventModal from '../helpers/AddEvent';
 import axios from 'axios';
 import { useGetUserId } from "../hooks/useGetUserId";
 import { useCookies } from "react-cookie";
@@ -12,14 +11,9 @@ import Swal from 'sweetalert2';
 import '@fullcalendar/core/locales/de';
 import Ics from '../helpers/Ics';
 
-
 const Kalender = () => {
   const userId = useGetUserId();
   const [cookies, _] = useCookies(["access_token"]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState([]);
-  const [editEvent, setEditEvent] = useState(null);
-  const [deleteEvent, setDeleteEvent] = useState(null);
   const eventTimeFormat = {
     hour: 'numeric',
     minute: '2-digit',
@@ -27,136 +21,42 @@ const Kalender = () => {
   };
 
   const calendarRef = useRef(null);
-
-  const handleEventClick = (info) => {
-    const event = info.event;
-  
-    Swal.fire({
-      title: 'Wählen Sie eine Option',
-      input: 'select',
-      inputOptions: {
-        option1: 'Termin löschen',
-        option2: 'Termin bearbeiten',
-      },
-      inputPlaceholder: 'Wählen Sie eine Option',
-      showCancelButton: true,
-      cancelButtonText: 'Abbrechen',
-      confirmButtonText: 'Auswählen'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
-      }
-    });
-    // Set the event to edit
-    setEditEvent(event);
-  
-    // Set the event to delete
-    setDeleteEvent(event);
-  };
-  
-
-
-  const handleEventEdit = async (event) => {
-    try {
-      await axios.put(`http://localhost:3001/events/update-event/${event.id}`, {
-        title: event.title,
-        start: moment(event.start).toDate(),
-        end: moment(event.end).toDate(),
-      }, {
-        headers: { authorization: cookies.access_token },
-      });
-
-      // Update the events in the state or refetch the events from the server
-      // based on your implementation
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleEventDelete = async (event) => {
-    try {
-      await axios.delete(`http://localhost:3001/events/delete-event/${event.id}`, {
-        headers: { authorization: cookies.access_token },
-      });
-
-      // Update the events in the state or refetch the events from the server
-      // based on your implementation
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onEventAdded = event => {
-    let calendarApi = calendarRef.current.getApi();
-    calendarApi.addEvent({
-      start: moment(event.start, 'YYYY-MM-DDTHH:mm:ss').toDate(),
-      end: moment(event.end, 'YYYY-MM-DDTHH:mm:ss').toDate(),
-      title: event.title,
-      
-    });
-  }
-  
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    async function fetchEvents() {
+    const fetchEvents = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/events/get-events/${userId}`, {
+        const response = await axios.get(`http://localhost:3001/ics/ics-events/${userId}`, {
           headers: {
             authorization: cookies.access_token
           }
         });
-        setEvents(response.data);
+
+        const uniqueEvents = filterDuplicateEvents(response.data);
+        setEvents(uniqueEvents);
       } catch (error) {
-        console.error(error);
+        console.error("Fehler beim Abrufen der ICS-Daten:", error);
       }
     }
 
     fetchEvents();
   }, [userId, cookies.access_token]);
 
-  async function handleEventAdd(data) {
-    try {
-      await axios.post('http://localhost:3001/events/create-event', data.event, {
-        headers: {
-          authorization: cookies.access_token
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  }
+  const filterDuplicateEvents = (events) => {
+    const uniqueEvents = [];
+    const eventMap = new Map();
 
-  const handleEventDidMount = (eventInfo) => {
-    const event = eventInfo.event;
-    const startTime = moment(event.start).format('H:mm');
-    const endTime = moment(event.end).format('H:mm');
-    const timeRange = `${startTime}-${endTime}`;
-    event.setExtendedProp('timeRange', timeRange);
-  };
+    for (const event of events) {
+      const eventKey = `${event.title}-${event.start}-${event.end}`;
 
-  const handleDateClick = (arg) => {
-    Swal.fire({
-      title: 'Wählen Sie eine Option',
-      input: 'select',
-      inputOptions: {
-        option1: 'Termin hinzufügen',
-        option2: 'Termin bearbeiten',
-        option3: 'Termin löschen'
-      },
-      inputPlaceholder: 'Wählen Sie eine Option',
-      showCancelButton: true,
-      cancelButtonText: 'Abbrechen',
-      confirmButtonText: 'Auswählen'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        const selectedOption = result.value;
-        console.log('Ausgewählte Option:', selectedOption);
+      if (!eventMap.has(eventKey)) {
+        eventMap.set(eventKey, true);
+        uniqueEvents.push(event);
       }
-    });
-    console.log('Date clicked: ', arg.date);
+    }
+
+    return uniqueEvents;
   };
-  
 
   return (
     <section>
@@ -165,17 +65,13 @@ const Kalender = () => {
         <h2>Für das aktuelle Semester</h2>
       </div>
       <div className='splan-buttons'>
-      <button onClick={() => setModalOpen(true)}>Füge einen Termin hinzu</button>
-      <Ics/>
+        <Ics />
       </div>
       <div style={{ position: 'relative', zIndex: 0 }}>
         <FullCalendar
           locale="de"
           ref={calendarRef}
-          events={events}
           plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-          eventClick={handleEventClick}
-          dateClick={handleDateClick}
           initialView={'timeGridWeek'}
           slotMinTime="08:00:00" // Die früheste Uhrzeit, die angezeigt werden soll
           slotMaxTime="22:00:00" // Die späteste Uhrzeit, die angezeigt werden soll
@@ -191,20 +87,10 @@ const Kalender = () => {
             start: 'today prev,next',
             center: 'title',
           }}
-          eventAdd={event => handleEventAdd(event)}
           eventTimeFormat={eventTimeFormat}
-          eventDidMount={handleEventDidMount}
-          eventContent={(eventInfo) => (
-            <>
-              <div>{eventInfo.event.extendedProps.timeRange}</div>
-              <div>{eventInfo.event.title}</div>
-            </>
-          )}
+          events={events} // Verwende die gefilterten Events
+
         />
-
-         {/* Add event modal */}
-      <AddEventModal isOpen={modalOpen} onClose={() => setModalOpen(false)} onEventAdded={event => onEventAdded(event)} />
-
       </div>
     </section>
   );
